@@ -17,7 +17,7 @@ function StaffRegistrationForm({ isOpen, onClose, onCreated }) {
   useEffect(() => {
     if (isOpen) {
       axios
-        .get("http://localhost:3000/api/assistantmanagers")
+        .get("https://task-managment-server-neon.vercel.app/api/assistantmanagers")
         .then((res) => setAssistantManagers(res.data))
         .catch((err) =>
           console.error("Error fetching assistant managers:", err)
@@ -32,7 +32,7 @@ function StaffRegistrationForm({ isOpen, onClose, onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/api/staff", {
+      await axios.post("https://task-managment-server-neon.vercel.app/api/staff", {
         ...form,
         role: "staff",
       });

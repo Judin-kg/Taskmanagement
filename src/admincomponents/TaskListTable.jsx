@@ -18,7 +18,7 @@ function TaskListTable() {
   
   const fetchTasks = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/tasks");
+      const res = await axios.get("https://task-managment-server-neon.vercel.app/api/tasks");
       setTasks(res.data);
     } catch (err) {
       console.error("Error fetching tasks:", err);
@@ -34,7 +34,7 @@ function TaskListTable() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this task?")) return;
     try {
-      await axios.delete(`http://localhost:3000/api/tasks/${id}`);
+      await axios.delete(`https://task-managment-server-neon.vercel.app/api/tasks/${id}`);
       fetchTasks(); // refresh after delete
     } catch (err) {
       console.error("Error deleting task:", err);

@@ -27,7 +27,7 @@ export default function TaskReports() {
 
   const fetchReports = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/tasks/reports");
+      const res = await axios.get("https://task-managment-server-neon.vercel.app/api/tasks/reports");
       setReport(res.data);
     } catch (err) {
       console.error("❌ Error fetching reports:", err);

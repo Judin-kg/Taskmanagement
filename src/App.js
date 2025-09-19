@@ -21,8 +21,7 @@ import Navabar from './components/Navabar';
 import StaffLogin from './authcomponents/StaffLogin';
 import StaffSignup from './authcomponents/StaffSignup';
 import AdminDashboard from './admincomponents/AdminDashboard';
-import StaffRegistrationForm from './authcomponents/StaffRegistrationForm';
-import StaffLoginForm from './authcomponents/StaffLoginForm';
+
 import ManagerLogin from './authcomponents/ManagerLogin';
 import ManagerDashboard from './managercomponents/ManagerDashboard';
 import AsstManagerLogin from './authcomponents/AsstManagerLogin';

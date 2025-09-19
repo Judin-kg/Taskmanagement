@@ -17,7 +17,7 @@ function AddAssistantManagerModalForm({ isOpen, onClose, onCreated }) {
 useEffect(() => {
   if (isOpen) {
     axios
-      .get("http://localhost:3000/api/managers")
+      .get("https://task-managment-server-neon.vercel.app/api/managers")
       .then((res) => {
         const managerOnly = res.data.filter((u) => u.role === "manager");
         setManagers(managerOnly);
@@ -33,7 +33,7 @@ useEffect(() => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/api/assistant-managers", {
+      await axios.post("https://task-managment-server-neon.vercel.app/api/assistant-managers", {
         ...form,
         role: "assistant_manager",
       });

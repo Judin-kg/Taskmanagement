@@ -9,7 +9,7 @@ export default function DepartmentListTable() {
 
   const fetchDepartments = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/departments");
+      const res = await axios.get("https://task-managment-server-neon.vercel.app/api/departments");
       setDepartments(res.data);
     } catch (err) {
       console.error("Error fetching departments:", err);

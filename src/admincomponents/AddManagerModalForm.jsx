@@ -95,7 +95,7 @@ function AddManagerModalForm({ isOpen, onClose, onCreated }) {
   useEffect(() => {
     if (isOpen) {
       axios
-        .get("http://localhost:3000/api/departments")
+        .get("https://task-managment-server-neon.vercel.app/api/departments")
         .then((res) => setDepartments(res.data))
         .catch((err) => console.error("Error fetching departments:", err));
     }
@@ -108,7 +108,7 @@ function AddManagerModalForm({ isOpen, onClose, onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/api/managers", { ...form, role: "manager" });
+      await axios.post("https://task-managment-server-neon.vercel.app/api/managers", { ...form, role: "manager" });
       setForm({
         name: "",
         email: "",

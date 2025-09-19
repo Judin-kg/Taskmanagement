@@ -8,7 +8,7 @@ export default function StaffListTable() {
   // Fetch staff list
   const fetchStaff = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/auth");
+      const res = await axios.get("https://task-managment-server-neon.vercel.app/api/auth");
       setStaff(res.data);
     } catch (err) {
       console.error("Error fetching staff:", err);

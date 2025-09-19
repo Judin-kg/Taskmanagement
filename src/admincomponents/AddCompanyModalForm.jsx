@@ -14,7 +14,7 @@ function AddCompanyModalForm({ isOpen, onClose, onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/api/companies", form);
+      await axios.post("https://task-managment-server-neon.vercel.app/api/companies", form);
       setForm({ name: "" });
       if (onCreated) onCreated(); // refresh company list
       onClose();

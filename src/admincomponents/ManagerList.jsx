@@ -11,7 +11,7 @@ export default function ManagerList() {
 
   const fetchManagers = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/managers");
+      const res = await axios.get("https://task-managment-server-neon.vercel.app/api/managers");
       const managerOnly = res.data.filter((u) => u.role === "manager");
       setManagers(managerOnly);
     } catch (err) {

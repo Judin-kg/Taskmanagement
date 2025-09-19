@@ -88,7 +88,7 @@ export default function StaffDashboard() {
 
     // ✅ Fetch tasks assigned to this staff member
     axios
-      .get(`http://localhost:3000/api/tasks/user/${staff.id}`, {
+      .get(`https://task-managment-server-neon.vercel.app/api/tasks/user/${staff.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -106,7 +106,7 @@ export default function StaffDashboard() {
   const handleStatusChange = async (taskId, newStatus) => {
     try {
       await axios.put(
-        `http://localhost:3000/api/tasks/${taskId}`,
+        `https://task-managment-server-neon.vercel.app/api/tasks/${taskId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -74,7 +74,7 @@ export default function CompanyListTable() {
 
   const fetchCompanies = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/companies");
+      const res = await axios.get("https://task-managment-server-neon.vercel.app/api/companies");
       setCompanies(res.data);
     } catch (err) {
       console.error("Error fetching companies:", err);
@@ -89,7 +89,7 @@ export default function CompanyListTable() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this company?")) return;
     try {
-      await axios.delete(`http://localhost:3000/api/companies/${id}`);
+      await axios.delete(`https://task-managment-server-neon.vercel.app/api/companies/${id}`);
       fetchCompanies();
     } catch (err) {
       console.error("Error deleting company:", err);

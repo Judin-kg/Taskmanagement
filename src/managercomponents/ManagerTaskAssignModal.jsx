@@ -43,7 +43,7 @@ function ManagerTaskAssignModal({ isOpen, onClose, onCreated }) {
 
       if (endpoint) {
         axios
-          .get(`http://localhost:3000${endpoint}`)
+          .get(`https://task-managment-server-neon.vercel.app${endpoint}`)
           .then((res) => setUsers(res.data))
           .catch((err) => console.error("Error fetching users:", err));
       } else {
@@ -59,7 +59,7 @@ function ManagerTaskAssignModal({ isOpen, onClose, onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/api/tasks", form);
+      await axios.post("https://task-managment-server-neon.vercel.app/api/tasks", form);
       setForm({
         taskName: "",
         description: "",
