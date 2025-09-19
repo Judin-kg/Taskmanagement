@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-
+// import './StaffLogin.css';
 const StaffLogin = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [message, setMessage] = useState('');
@@ -82,6 +82,52 @@ const StaffLogin = () => {
         <Link to="/signup">Sign Up</Link>
       </div>
     </div>
+
+  // <section className="login-wrapper">
+  //   <div className="login-container">
+  //     <h2>Staff Login</h2>
+
+  //     {/* ✅ Error Message */}
+  //     {message && <div className="alert alert-danger">{message}</div>}
+
+  //     <form onSubmit={handleSubmit}>
+  //       {/* Email Input */}
+  //       <div className="input-box">
+  //         <input
+  //           type="email"
+  //           name="email"
+  //           value={formData.email}
+  //           onChange={handleChange}
+  //           required
+  //         />
+  //         <label>Email</label>
+  //       </div>
+
+  //       {/* Password Input */}
+  //       <div className="input-box ">
+  //         <input
+  //           type="password"
+  //           name="password"
+  //           value={formData.password}
+  //           onChange={handleChange}
+  //           required
+  //         />
+  //         <label>Password</label>
+  //       </div>
+
+  //       {/* Submit Button */}
+  //       <button className="login-btn" type="submit">
+  //         Login
+  //       </button>
+  //     </form>
+
+  //     {/* Signup Link */}
+  //     <div className="signup-link">
+  //       <span>Don't have an account? </span>
+  //       <Link to="/signup">Sign Up</Link>
+  //     </div>
+  //   </div>
+  // </section>
   );
 };
 
