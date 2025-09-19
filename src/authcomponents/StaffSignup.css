@@ -1,14 +1,12 @@
-/* ===== Container (Centers Login Section) ===== */
 .admin-login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  height: 100vh;
   background: #f4f6f8;
   padding: 1rem;
 }
 
-/* ===== Card ===== */
 .admin-login-card {
   background: #ffffff;
   padding: 2rem;
@@ -16,21 +14,8 @@
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
-  animation: fadeIn 0.5s ease-in-out;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ===== Title ===== */
 .admin-login-title {
   font-size: 1.8rem;
   font-weight: bold;
@@ -39,15 +24,8 @@
   color: #333;
 }
 
-/* ===== Error Message ===== */
-.admin-login-error {
-  color: red;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-/* ===== Form ===== */
-.admin-login-form input {
+.admin-login-form input,
+.admin-login-form select {
   width: 100%;
   padding: 0.8rem;
   margin-bottom: 1rem;
@@ -57,13 +35,13 @@
   transition: 0.3s ease;
 }
 
-.admin-login-form input:focus {
+.admin-login-form input:focus,
+.admin-login-form select:focus {
   outline: none;
   border-color: #2563eb;
   box-shadow: 0px 0px 5px rgba(37, 99, 235, 0.3);
 }
 
-/* ===== Button ===== */
 .admin-login-btn {
   width: 100%;
   background-color: #2563eb;
@@ -81,33 +59,11 @@
   background-color: #1d4ed8;
 }
 
-/* ===== Signup Link ===== */
-.signup-link {
-  text-align: center;
-  margin-top: 1rem;
-}
-
-.signup-link a {
-  color: #2563eb;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.signup-link a:hover {
-  text-decoration: underline;
-}
-
-/* ===== Responsive Design ===== */
+/* ✅ Responsive Design */
 @media (max-width: 768px) {
   .admin-login-card {
-    max-width: 90%;
     padding: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .admin-login-card {
-    padding: 1rem;
+    max-width: 90%;
   }
 
   .admin-login-title {
@@ -115,8 +71,28 @@
   }
 
   .admin-login-form input,
+  .admin-login-form select {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+  }
+
   .admin-login-btn {
     font-size: 0.9rem;
     padding: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-login-container {
+    padding: 0.5rem;
+  }
+
+  .admin-login-card {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .admin-login-title {
+    font-size: 1.3rem;
   }
 }

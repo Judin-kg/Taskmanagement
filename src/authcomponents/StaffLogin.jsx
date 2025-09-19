@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-// import './StaffLogin.css';
+import './StaffLogin.css';
 const StaffLogin = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [message, setMessage] = useState('');
@@ -44,90 +44,83 @@ const StaffLogin = () => {
   };
 
   return (
-    <div className="container mt-5" style={{ maxWidth: '400px' }}>
-      <h2 className="mb-4">Login</h2>
+    // <div className="container mt-5" style={{ maxWidth: '400px' }}>
+    //   <h2 className="mb-4">Login</h2>
 
-      {message && <div className="alert alert-danger">{message}</div>}
+    //   {message && <div className="alert alert-danger">{message}</div>}
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label>Email</label>
+    //   <form onSubmit={handleSubmit}>
+    //     <div className="mb-3">
+    //       <label>Email</label>
+    //       <input
+    //         name="email"
+    //         type="email"
+    //         className="form-control"
+    //         value={formData.email}
+    //         onChange={handleChange}
+    //         required
+    //       />
+    //     </div>
+
+    //     <div className="mb-3">
+    //       <label>Password</label>
+    //       <input
+    //         name="password"
+    //         type="password"
+    //         className="form-control"
+    //         value={formData.password}
+    //         onChange={handleChange}
+    //         required
+    //       />
+    //     </div>
+
+    //     <button className="btn btn-success w-100" type="submit">Login</button>
+    //   </form>
+
+    //   <div className="mt-3 text-center">
+    //     <span>Don't have an account? </span>
+    //     <Link to="/signup">Sign Up</Link>
+    //   </div>
+    // </div>
+
+        <div className="admin-login-container">
+      <div className="admin-login-card">
+        <h2 className="admin-login-title">Login</h2>
+
+        {message && <div className="admin-login-error">{message}</div>}
+
+        <form className="admin-login-form" onSubmit={handleSubmit}>
           <input
             name="email"
             type="email"
-            className="form-control"
+            placeholder="Email"
             value={formData.email}
             onChange={handleChange}
             required
           />
-        </div>
 
-        <div className="mb-3">
-          <label>Password</label>
           <input
             name="password"
             type="password"
-            className="form-control"
+            placeholder="Password"
             value={formData.password}
             onChange={handleChange}
             required
           />
+
+          <button className="admin-login-btn" type="submit">
+            Login
+          </button>
+        </form>
+
+        <div className="signup-link">
+          Don't have an account? <Link to="/signup">Sign Up</Link>
         </div>
-
-        <button className="btn btn-success w-100" type="submit">Login</button>
-      </form>
-
-      <div className="mt-3 text-center">
-        <span>Don't have an account? </span>
-        <Link to="/signup">Sign Up</Link>
       </div>
     </div>
 
-  // <section className="login-wrapper">
-  //   <div className="login-container">
-  //     <h2>Staff Login</h2>
 
-  //     {/* ✅ Error Message */}
-  //     {message && <div className="alert alert-danger">{message}</div>}
-
-  //     <form onSubmit={handleSubmit}>
-  //       {/* Email Input */}
-  //       <div className="input-box">
-  //         <input
-  //           type="email"
-  //           name="email"
-  //           value={formData.email}
-  //           onChange={handleChange}
-  //           required
-  //         />
-  //         <label>Email</label>
-  //       </div>
-
-  //       {/* Password Input */}
-  //       <div className="input-box ">
-  //         <input
-  //           type="password"
-  //           name="password"
-  //           value={formData.password}
-  //           onChange={handleChange}
-  //           required
-  //         />
-  //         <label>Password</label>
-  //       </div>
-
-  //       {/* Submit Button */}
-  //       <button className="login-btn" type="submit">
-  //         Login
-  //       </button>
-  //     </form>
-
-  //     {/* Signup Link */}
-  //     <div className="signup-link">
-  //       <span>Don't have an account? </span>
-  //       <Link to="/signup">Sign Up</Link>
-  //     </div>
-  //   </div>
-  // </section>
+  
   );
 };
 
