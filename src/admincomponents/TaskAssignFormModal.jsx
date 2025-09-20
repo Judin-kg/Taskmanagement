@@ -264,8 +264,10 @@ console.log("Form dataaaaaaaaaaaaaaa:", form);
               required
             >
               <option value="once">Once</option>
+              <option value="daily">Daily</option>
               <option value="weekly">Weekly</option>
               <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option>
             </select>
 
             <input
