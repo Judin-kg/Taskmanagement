@@ -82,10 +82,112 @@ function ManagerTaskAssignModal({ isOpen, onClose, onCreated }) {
 console.log("Form dataaaaaaaaaaaaaaa:", form);
 
   return (
-    <div className="modal-overlay">
+    // <div className="modal-overlay">
+    //   <div className="modal-content">
+    //     <h2>Assign Task</h2>
+    //     <form onSubmit={handleSubmit} className="modal-form">
+    //       <input
+    //         type="text"
+    //         name="taskName"
+    //         placeholder="Task Name"
+    //         value={form.taskName}
+    //         onChange={handleChange}
+    //         required
+    //       />
+
+    //       <textarea
+    //         name="description"
+    //         placeholder="Task Description"
+    //         value={form.description}
+    //         onChange={handleChange}
+    //       />
+
+    //       <input
+    //         type="datetime-local"
+    //         name="scheduledTime"
+    //         value={form.scheduledTime}
+    //         onChange={handleChange}
+    //         required
+    //       />
+
+    //       <select name="role" value={form.role} onChange={handleChange} required>
+    //         <option value="">Select Role</option>
+    //         <option value="myself">Myself</option>
+    //         {/* <option value="manager">Manager</option> */}
+    //         <option value="assistantmanager">Assistant Manager</option>
+    //         <option value="staff">Staff</option>
+    //       </select>
+
+    //       {/* Conditional dropdown based on role */}
+    //       {form.role !== "" && form.role !== "myself" && (
+    //         <select
+    //           name="assignedTo"
+    //           value={form.assignedTo}
+    //           onChange={handleChange}
+    //           required
+    //         >
+    //           <option value="">Select {form.role}</option>
+    //           {users.map((u) => (
+    //             <option key={u._id} value={u._id}>
+    //               {u.name}
+    //             </option>
+    //           ))}
+    //         </select>
+    //       )}
+
+
+    //       {/* ✅ Status Dropdown */}
+    //       <select
+    //         name="status"
+    //         value={form.status}
+    //         onChange={handleChange}
+    //         required
+    //       >
+    //         <option value="pending">Pending</option>
+    //         <option value="in-progress">In Progress</option>
+    //         <option value="completed">Completed</option>
+    //       </select>
+
+    //        {/* ✅ Repeat Dropdown */}
+    //     <select
+    //         name="repeat"
+    //         value={form.repeat}
+    //         onChange={handleChange}
+    //         required
+    //       >
+    //         <option value="once">Once</option>
+    //         <option value="weekly">Weekly</option>
+    //         <option value="monthly">Monthly</option>
+    //       </select>
+
+
+    //       {/* ✅ Show assignedBy info (read-only) */}
+    //       <input
+    //         type="text"
+    //         name="assignedBy"
+    //         value={loggedUser?.role || ""}
+    //         readOnly
+    //         className="readonly-field"
+    //         placeholder="Assigned By"
+    //       />
+
+    //       <div className="modal-actions">
+    //         <button type="submit" className="save-btn">
+    //           Assign Task
+    //         </button>
+    //         <button type="button" className="cancel-btn" onClick={onClose}>
+    //           Cancel
+    //         </button>
+    //       </div>
+    //     </form>
+    //   </div>
+    // </div>
+      <div className="modal-overlay">
       <div className="modal-content">
         <h2>Assign Task</h2>
-        <form onSubmit={handleSubmit} className="modal-form">
+
+        {/* Scrollable Form Area */}
+        <div className="modal-form">
           <input
             type="text"
             name="taskName"
@@ -113,12 +215,10 @@ console.log("Form dataaaaaaaaaaaaaaa:", form);
           <select name="role" value={form.role} onChange={handleChange} required>
             <option value="">Select Role</option>
             <option value="myself">Myself</option>
-            {/* <option value="manager">Manager</option> */}
             <option value="assistantmanager">Assistant Manager</option>
             <option value="staff">Staff</option>
           </select>
 
-          {/* Conditional dropdown based on role */}
           {form.role !== "" && form.role !== "myself" && (
             <select
               name="assignedTo"
@@ -135,33 +235,18 @@ console.log("Form dataaaaaaaaaaaaaaa:", form);
             </select>
           )}
 
-
-          {/* ✅ Status Dropdown */}
-          <select
-            name="status"
-            value={form.status}
-            onChange={handleChange}
-            required
-          >
+          <select name="status" value={form.status} onChange={handleChange} required>
             <option value="pending">Pending</option>
             <option value="in-progress">In Progress</option>
             <option value="completed">Completed</option>
           </select>
 
-           {/* ✅ Repeat Dropdown */}
-        <select
-            name="repeat"
-            value={form.repeat}
-            onChange={handleChange}
-            required
-          >
+          <select name="repeat" value={form.repeat} onChange={handleChange} required>
             <option value="once">Once</option>
             <option value="weekly">Weekly</option>
             <option value="monthly">Monthly</option>
           </select>
 
-
-          {/* ✅ Show assignedBy info (read-only) */}
           <input
             type="text"
             name="assignedBy"
@@ -170,16 +255,17 @@ console.log("Form dataaaaaaaaaaaaaaa:", form);
             className="readonly-field"
             placeholder="Assigned By"
           />
+        </div>
 
-          <div className="modal-actions">
-            <button type="submit" className="save-btn">
-              Assign Task
-            </button>
-            <button type="button" className="cancel-btn" onClick={onClose}>
-              Cancel
-            </button>
-          </div>
-        </form>
+        {/* Sticky Footer Buttons */}
+        <div className="modal-actions">
+          <button type="submit" className="save-btn" onClick={handleSubmit}>
+            Assign Task
+          </button>
+          <button type="button" className="cancel-btn" onClick={onClose}>
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   );

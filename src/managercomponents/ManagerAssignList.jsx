@@ -82,7 +82,7 @@ import {
   Legend,
   ResponsiveContainer
 } from "recharts";
-
+import"./ManagerTaskAssignList.css"
 export default function ManagerAssignList() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -157,7 +157,81 @@ export default function ManagerAssignList() {
   const COLORS = ["#facc15", "#3b82f6", "#22c55e"]; // yellow, blue, green
 
   return (
-    <div className="manager-dashboard">
+//     <div className="manager-dashboard">
+//       <h2 className="dashboard-title">Welcome, {manager.email}</h2>
+
+//       {loading ? (
+//         <p className="loading-text">Loading tasks...</p>
+//       ) : tasks.length === 0 ? (
+//         <p className="no-task-text">No tasks assigned to you.</p>
+//       ) : (
+// <>
+
+
+
+//          {/* ✅ Task Status Pie Chart */}
+//           <div className="task-status-chart" style={{ marginTop: "2rem" }}>
+//             <h3>Task Status Overview</h3>
+//             <ResponsiveContainer width="100%" height={300}>
+//               <PieChart>
+//                 <Pie
+//                   data={pieData}
+//                   cx="50%"
+//                   cy="50%"
+//                   labelLine={false}
+//                   outerRadius={120}
+//                   dataKey="value"
+//                   label={({ name, value }) => `${name}: ${value}`}
+//                 >
+//                   {pieData.map((entry, index) => (
+//                     <Cell key={`cell-${index}`} fill={COLORS[index]} />
+//                   ))}
+//                 </Pie>
+//                 <Tooltip />
+//                 <Legend />
+//               </PieChart>
+//             </ResponsiveContainer>
+//           </div>
+//         <table className="task-table">
+//           <thead>
+//             <tr>
+//               <th>Task Name</th>
+//               <th>Description</th>
+//               <th>Scheduled Time</th>
+//               <th>Assigned By</th>
+//               <th>repeat</th>
+//               <th>Status</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {Array.isArray(tasks) &&
+//                 tasks.map((task) =>
+//              (
+//               <tr key={task._id}>
+//                 <td>{task.taskName}</td>
+//                 <td>{task.description}</td>
+//                 <td>{new Date(task.scheduledTime).toLocaleString()}</td>
+//                 <td>{task.assignedBy|| "Unknown"}</td>
+//                 <td>{task.repeat || "once"}</td>
+//                 <td>
+//                   <select
+//                     value={task.status || "pending"}
+//                     onChange={(e) => handleStatusChange(task._id, e.target.value)}
+//                   >
+//                     <option value="pending">Pending</option>
+//                     <option value="in-progress">In Progress</option>
+//                     <option value="completed">Completed</option>
+//                     <option value="cancelled">Cancelled</option>
+//                   </select>
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//         </>
+//       )}
+//     </div>
+ <div className="manager-dashboard">
       <h2 className="dashboard-title">Welcome, {manager.email}</h2>
 
       {loading ? (
@@ -165,12 +239,8 @@ export default function ManagerAssignList() {
       ) : tasks.length === 0 ? (
         <p className="no-task-text">No tasks assigned to you.</p>
       ) : (
-<>
-
-
-
-         {/* ✅ Task Status Pie Chart */}
-          <div className="task-status-chart" style={{ marginTop: "2rem" }}>
+        <>
+          <div className="task-status-chart">
             <h3>Task Status Overview</h3>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
@@ -192,45 +262,45 @@ export default function ManagerAssignList() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-        <table className="task-table">
-          <thead>
-            <tr>
-              <th>Task Name</th>
-              <th>Description</th>
-              <th>Scheduled Time</th>
-              <th>Assigned By</th>
-              <th>repeat</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.isArray(tasks) &&
-                tasks.map((task) =>
-             (
-              <tr key={task._id}>
-                <td>{task.taskName}</td>
-                <td>{task.description}</td>
-                <td>{new Date(task.scheduledTime).toLocaleString()}</td>
-                <td>{task.assignedBy|| "Unknown"}</td>
-                <td>{task.repeat || "once"}</td>
-                <td>
-                  <select
-                    value={task.status || "pending"}
-                    onChange={(e) => handleStatusChange(task._id, e.target.value)}
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="in-progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                    <option value="cancelled">Cancelled</option>
-                  </select>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        </>
+
+          <div className="table-wrapper">
+            <table className="task-table">
+              <thead>
+                <tr>
+                  <th>Task Name</th>
+                  <th>Description</th>
+                  <th>Scheduled Time</th>
+                  <th>Assigned By</th>
+                  <th>Repeat</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tasks.map((task) => (
+                  <tr key={task._id}>
+                    <td>{task.taskName}</td>
+                    <td>{task.description || "-"}</td>
+                    <td>{new Date(task.scheduledTime).toLocaleString()}</td>
+                    <td>{task.assignedBy || "Unknown"}</td>
+                    <td>{task.repeat || "once"}</td>
+                    <td>
+                      <select
+                        value={task.status || "pending"}
+                        onChange={(e) => handleStatusChange(task._id, e.target.value)}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+     </>
       )}
     </div>
-    
   );
 }

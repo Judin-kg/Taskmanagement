@@ -1,18 +1,13 @@
-/* Modal Overlay */
-/* Modal overlay */
-/* Table Wrapper for horizontal scroll */
 .table-wrapper {
   width: 100%;
-  overflow-x: auto; /* Enables scroll on small screens */
+  overflow-x: auto; /* Enables horizontal scroll on mobile */
   -webkit-overflow-scrolling: touch;
-  margin-top: 1.5rem;
 }
 
-/* Task Table */
 .task-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 700px; /* keeps table scrollable on smaller devices */
+  min-width: 700px; /* Keeps table scrollable on smaller devices */
   background: white;
   border-radius: 8px;
   overflow: hidden;
@@ -35,34 +30,17 @@
   background: #fafafa;
 }
 
-.task-table select {
-  padding: 5px;
-  font-size: 13px;
-}
-
-/* ===== Tablet View (≤ 768px) ===== */
+/* Tablet View (≤ 768px) */
 @media (max-width: 768px) {
-  .task-list-header h1 {
-    font-size: 1.5rem;
-  }
-
   .task-table th,
   .task-table td {
     font-size: 13px;
     padding: 8px;
   }
-
-  .table-wrapper {
-    min-width: 600px;
-  }
 }
 
-/* ===== Mobile View (≤ 480px) ===== */
+/* Mobile View (≤ 480px) */
 @media (max-width: 480px) {
-  .task-list-header h1 {
-    font-size: 1.3rem;
-  }
-
   .task-table th,
   .task-table td {
     font-size: 12px;
@@ -70,13 +48,6 @@
   }
 
   .task-table {
-    min-width: 500px; /* keeps horizontal scroll */
-  }
-
-  .add-task-btn {
-    width: 100%;
-    margin-top: 0.5rem;
+    min-width: 600px; /* Keeps horizontal scroll */
   }
 }
-
-

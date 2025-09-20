@@ -59,8 +59,93 @@ function TaskListTable() {
   const COLORS = ["#facc15", "#3b82f6", "#22c55e"]; // yellow, blue, green
 
   return (
+    // <div className="task-list-container">
+    //       {/* ✅ Pie Chart Section */}
+    //   <div className="task-status-chart" style={{ marginTop: "2rem" }}>
+    //     <h3>Task Status Overview</h3>
+    //     <ResponsiveContainer width="100%" height={300}>
+    //       <PieChart>
+    //         <Pie
+    //           data={pieData}
+    //           cx="50%"
+    //           cy="50%"
+    //           labelLine={false}
+    //           outerRadius={120}
+    //           dataKey="value"
+    //           label={({ name, value }) => `${name}: ${value}`}
+    //         >
+    //           {pieData.map((entry, index) => (
+    //             <Cell key={`cell-${index}`} fill={COLORS[index]} />
+    //           ))}
+    //         </Pie>
+    //         <Tooltip />
+    //         <Legend />
+    //       </PieChart>
+    //     </ResponsiveContainer>
+    //   </div>
+    //   <div className="task-list-header">
+    //     <h1>Task List</h1>
+
+        
+    //     <button className="add-task-btn" onClick={() => setIsModalOpen(true)}>
+    //       + Add Task
+    //     </button>
+    //   </div>
+
+    //   <table className="task-table">
+    //     <thead>
+    //       <tr>
+    //         <th>Task Name</th>
+    //         <th>Description</th>
+    //         <th>Scheduled Time</th>
+    //         <th>Role</th>
+    //         <th>Assigned To</th>
+    //         <th>status</th>
+    //         <th>repeat</th>
+    //         <th>Actions</th>
+    //       </tr>
+    //     </thead>
+    //     <tbody>
+    //       {tasks.length > 0 ? (
+    //         tasks.map((t) => (
+    //           <tr key={t._id}>
+    //             <td>{t.taskName}</td>
+    //             <td>{t.description || "—"}</td>
+    //             <td>{new Date(t.scheduledTime).toLocaleString()}</td>
+    //             <td>{t.role}</td>
+    //             <td>{t.assignedTo ? t.assignedTo.name : "Myself"}</td>
+    //             <td>{t.status}</td>
+    //             <td>{t.repeat}</td>
+    //             <td>
+    //               <button className="edit-btn">Edit</button>
+    //               <button
+    //                 className="delete-btn"
+    //                 onClick={() => handleDelete(t._id)}
+    //               >
+    //                 Delete
+    //               </button>
+    //             </td>
+    //           </tr>
+    //         ))
+    //       ) : (
+    //         <tr>
+    //           <td colSpan="6" style={{ textAlign: "center" }}>
+    //             No tasks found
+    //           </td>
+    //         </tr>
+    //       )}
+    //     </tbody>
+    //   </table>
+
+    //   {/* Task Assign Modal */}
+    //   <TaskAssignFormModal
+    //     isOpen={isModalOpen}
+    //     onClose={() => setIsModalOpen(false)}
+    //     onCreated={fetchTasks}
+    //   />
+    // </div>
     <div className="task-list-container">
-          {/* ✅ Pie Chart Section */}
+      {/* ✅ Pie Chart Section */}
       <div className="task-status-chart" style={{ marginTop: "2rem" }}>
         <h3>Task Status Overview</h3>
         <ResponsiveContainer width="100%" height={300}>
@@ -83,59 +168,61 @@ function TaskListTable() {
           </PieChart>
         </ResponsiveContainer>
       </div>
-      <div className="task-list-header">
-        <h1>Task List</h1>
 
-        
+      <div className="task-list-header">
+        <h1 className="dashboard-title">Task List</h1>
         <button className="add-task-btn" onClick={() => setIsModalOpen(true)}>
           + Add Task
         </button>
       </div>
 
-      <table className="task-table">
-        <thead>
-          <tr>
-            <th>Task Name</th>
-            <th>Description</th>
-            <th>Scheduled Time</th>
-            <th>Role</th>
-            <th>Assigned To</th>
-            <th>status</th>
-            <th>repeat</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tasks.length > 0 ? (
-            tasks.map((t) => (
-              <tr key={t._id}>
-                <td>{t.taskName}</td>
-                <td>{t.description || "—"}</td>
-                <td>{new Date(t.scheduledTime).toLocaleString()}</td>
-                <td>{t.role}</td>
-                <td>{t.assignedTo ? t.assignedTo.name : "Myself"}</td>
-                <td>{t.status}</td>
-                <td>{t.repeat}</td>
-                <td>
-                  <button className="edit-btn">Edit</button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => handleDelete(t._id)}
-                  >
-                    Delete
-                  </button>
+      {/* ✅ Table Wrapper for Scroll on Mobile/Tablet */}
+      <div className="table-wrapper">
+        <table className="task-table">
+          <thead>
+            <tr>
+              <th>Task Name</th>
+              <th>Description</th>
+              <th>Scheduled Time</th>
+              <th>Role</th>
+              <th>Assigned To</th>
+              <th>Status</th>
+              <th>Repeat</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks.length > 0 ? (
+              tasks.map((t) => (
+                <tr key={t._id}>
+                  <td>{t.taskName}</td>
+                  <td>{t.description || "—"}</td>
+                  <td>{new Date(t.scheduledTime).toLocaleString()}</td>
+                  <td>{t.role}</td>
+                  <td>{t.assignedTo ? t.assignedTo.name : "Myself"}</td>
+                  <td>{t.status}</td>
+                  <td>{t.repeat}</td>
+                  <td>
+                    <button className="edit-btn">Edit</button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(t._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" style={{ textAlign: "center" }}>
+                  No tasks found
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="6" style={{ textAlign: "center" }}>
-                No tasks found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {/* Task Assign Modal */}
       <TaskAssignFormModal
@@ -144,6 +231,8 @@ function TaskListTable() {
         onCreated={fetchTasks}
       />
     </div>
+ 
+    
   );
 }
 export default TaskListTable;

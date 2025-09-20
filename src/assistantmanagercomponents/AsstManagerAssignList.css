@@ -1,44 +1,47 @@
-
-.staff-dashboard {
-  padding: 1rem;
+/* General dashboard styles */
+/* General dashboard styles */
+.assistant-dashboard {
+  padding: 2rem;
   background: #f9f9f9;
   min-height: 100vh;
+  font-family: sans-serif;
 }
 
 .dashboard-title {
-  font-size: 1.8rem;
+  font-size: 2rem;
   text-align: center;
-  margin-bottom: 1rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
 }
 
-/* ===== Loading & Empty States ===== */
 .loading-text,
-.no-task-text {
+.no-task-text,
+.no-login {
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #555;
-  margin-top: 1rem;
 }
 
-/* ===== Chart Wrapper ===== */
+/* Pie Chart Wrapper */
 .chart-wrapper {
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
   height: 300px;
-  margin: 0 auto 20px auto;
+  margin: 0 auto 2rem auto;
 }
 
-/* ===== Table Wrapper for Scroll ===== */
+/* Table Wrapper */
 .table-wrapper {
   width: 100%;
-  overflow-x: auto; /* ✅ Enables scroll on small screens */
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  margin-top: 1rem;
 }
 
 .task-table {
   width: 100%;
+  min-width: 700px;
   border-collapse: collapse;
-  min-width: 700px; /* ✅ keeps table scrollable on smaller devices */
   background: white;
   border-radius: 8px;
   overflow: hidden;
@@ -48,8 +51,8 @@
 .task-table td {
   border: 1px solid #ddd;
   padding: 10px;
-  text-align: left;
   font-size: 14px;
+  text-align: left;
 }
 
 .task-table th {
@@ -66,14 +69,13 @@
   font-size: 13px;
 }
 
-/* ===== Tablet View (≤ 768px) ===== */
+/* ===== Tablet (≤768px) ===== */
 @media (max-width: 768px) {
   .dashboard-title {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 
   .chart-wrapper {
-    max-width: 100%;
     height: 250px;
   }
 
@@ -84,14 +86,18 @@
   }
 }
 
-/* ===== Mobile View (≤ 480px) ===== */
+/* ===== Mobile (≤480px) ===== */
 @media (max-width: 480px) {
   .dashboard-title {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
 
   .chart-wrapper {
     height: 200px;
+  }
+
+  .task-table {
+    min-width: 600px;
   }
 
   .task-table th,
@@ -99,9 +105,27 @@
     font-size: 12px;
     padding: 6px;
   }
+}
+
+/* ===== Very small mobile (<400px) ===== */
+@media (max-width: 400px) {
+  .chart-wrapper {
+    height: 180px;
+  }
+
+  .dashboard-title {
+    font-size: 1.2rem;
+  }
 
   .task-table {
-    min-width: 600px; /* ✅ keeps horizontal scroll */
+    min-width: 500px;
+  }
+
+  .task-table th,
+  .task-table td {
+    font-size: 11px;
+    padding: 5px;
   }
 }
+
 

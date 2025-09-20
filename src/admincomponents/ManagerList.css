@@ -9,6 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .manager-list-header h1 {
@@ -32,27 +33,18 @@
   background-color: #2980b9;
 }
 
-.logout-btn {
-  background-color: #e74c3c;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background 0.3s;
-  margin-top: 15px;
-  margin-bottom: 20px;
-}
-
-.logout-btn:hover {
-  background-color: #c0392b;
+/* ===== Table Wrapper for Scroll ===== */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto; /* enables horizontal scroll on small screens */
+  -webkit-overflow-scrolling: touch;
 }
 
 .manager-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  min-width: 600px; /* ensures scroll on smaller devices */
 }
 
 .manager-table th,
@@ -60,6 +52,7 @@
   padding: 12px 15px;
   border: 1px solid #ddd;
   text-align: left;
+  font-size: 14px;
 }
 
 .manager-table th {
@@ -75,3 +68,32 @@
 .manager-table tr:hover {
   background-color: #ecf0f1;
 }
+
+/* ===== Tablet View (≤ 768px) ===== */
+@media (max-width: 768px) {
+  .manager-table th,
+  .manager-table td {
+    font-size: 13px;
+    padding: 10px;
+  }
+}
+
+/* ===== Mobile View (≤ 480px) ===== */
+@media (max-width: 480px) {
+  .manager-table {
+    min-width: 500px; /* allows horizontal scroll */
+  }
+
+  .manager-table th,
+  .manager-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .manager-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+

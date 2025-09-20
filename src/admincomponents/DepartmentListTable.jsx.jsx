@@ -21,52 +21,110 @@ export default function DepartmentListTable() {
   }, []);
 
   return (
-    <div className="department-list-container">
+    // <div className="department-list-container">
+    //   <div className="department-list-header">
+    //     <h1>Departments</h1>
+    //     <button className="add-department-btn" onClick={() => setShowModal(true)}>
+    //       + Add Department
+    //     </button>
+    //   </div>
+
+    //   <table className="department-table">
+    //     <thead>
+    //       <tr>
+    //         <th>Name</th>
+    //         <th>Description</th>
+    //         <th>Created At</th>
+    //         <th>Actions</th>
+    //       </tr>
+    //     </thead>
+    //     <tbody>
+    //       {departments.length > 0 ? (
+    //         departments.map((dept) => (
+    //           <tr key={dept._id}>
+    //             <td>{dept.name}</td>
+    //             <td>{dept.description || "-"}</td>
+    //             <td>{new Date(dept.createdAt).toLocaleDateString()}</td>
+    //             <td>
+    //               <button
+    //                 className="delete-btn"
+    //                 onClick={async () => {
+    //                   await axios.delete(`http://localhost:3000/api/departments/${dept._id}`);
+    //                   fetchDepartments();
+    //                 }}
+    //               >
+    //                 Delete
+    //               </button>
+    //             </td>
+    //           </tr>
+    //         ))
+    //       ) : (
+    //         <tr>
+    //           <td colSpan="4" style={{ textAlign: "center" }}>
+    //             No departments found
+    //           </td>
+    //         </tr>
+    //       )}
+    //     </tbody>
+    //   </table>
+
+    //   <AddDepartmentModalForm
+    //     isOpen={showModal}
+    //     onClose={() => setShowModal(false)}
+    //     onCreated={fetchDepartments}
+    //   />
+    // </div>
+     <div className="department-list-container">
       <div className="department-list-header">
         <h1>Departments</h1>
-        <button className="add-department-btn" onClick={() => setShowModal(true)}>
+        <button
+          className="add-department-btn"
+          onClick={() => setShowModal(true)}
+        >
           + Add Department
         </button>
       </div>
 
-      <table className="department-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Created At</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {departments.length > 0 ? (
-            departments.map((dept) => (
-              <tr key={dept._id}>
-                <td>{dept.name}</td>
-                <td>{dept.description || "-"}</td>
-                <td>{new Date(dept.createdAt).toLocaleDateString()}</td>
-                <td>
-                  <button
+      <div className="table-wrapper">
+        <table className="department-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Created At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {departments.length > 0 ? (
+              departments.map((dept) => (
+                <tr key={dept._id}>
+                  <td>{dept.name}</td>
+                  <td>{dept.description || "-"}</td>
+                  <td>{new Date(dept.createdAt).toLocaleDateString()}</td>
+                   <td>
+                <button
                     className="delete-btn"
                     onClick={async () => {
-                      await axios.delete(`http://localhost:3000/api/departments/${dept._id}`);
+                      await axios.delete(`https://task-managment-server-neon.vercel.app/api/departments/${dept._id}`);
                       fetchDepartments();
                     }}
                   >
                     Delete
                   </button>
                 </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                  No departments found
+                </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="4" style={{ textAlign: "center" }}>
-                No departments found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       <AddDepartmentModalForm
         isOpen={showModal}

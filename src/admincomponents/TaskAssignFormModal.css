@@ -84,23 +84,26 @@
   background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* 👈 aligns modal to top for full height */
   z-index: 999;
-  padding: 10px;
-  padding-top: 30px;
+  padding: 0; /* ✅ remove extra padding to maximize space */
+  overflow-y: auto; /* ✅ allows modal to scroll if needed */
+  margin-top: 80px; /* ✅ small margin from top */
 }
 
 .modal-container {
   background: white;
-  width: 90%;
+  width: 95%;
   max-width: 500px;
-  border-radius: 12px;
+  height: 100vh; /* ✅ modal takes full screen height */
+  border-radius: 10px; /* ✅ no rounded corners when full screen */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-content {
-  max-height: 85vh;
+  flex: 1; /* ✅ take all remaining space */
   overflow-y: auto;
   padding: 20px;
 }
@@ -110,6 +113,12 @@
   font-weight: bold;
   text-align: center;
   margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  background: white;
+  padding: 10px 0;
+  z-index: 10;
+  border-bottom: 1px solid #ddd;
 }
 
 .modal-form {
@@ -121,7 +130,7 @@
 .modal-form input,
 .modal-form select,
 .modal-form textarea {
-  padding: 10px;
+  padding: 12px;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -129,7 +138,7 @@
 }
 
 textarea {
-  min-height: 80px;
+  min-height: 100px; /* ✅ slightly larger text area */
   resize: vertical;
 }
 
@@ -141,31 +150,34 @@ textarea {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  margin-top: 10px;
+  padding: 12px;
+  border-top: 1px solid #ddd;
+  background: white;
+  position: sticky;
+  bottom: 0;
+}
+
+.save-btn,
+.cancel-btn {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  flex: 1;
 }
 
 .save-btn {
   background-color: #2563eb;
   color: white;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  flex: 1;
+}
+
+.save-btn:hover {
+  background-color: #1d4ed8;
 }
 
 .cancel-btn {
   background-color: #ef4444;
   color: white;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  flex: 1;
-}
-
-.save-btn:hover {
-  background-color: #1d4ed8;
 }
 
 .cancel-btn:hover {
@@ -176,6 +188,8 @@ textarea {
 @media (max-width: 480px) {
   .modal-container {
     width: 100%;
-    max-width: 95%;
+    height: 100vh; /* ✅ full-screen modal on mobile */
+    border-radius: 0;
   }
 }
+

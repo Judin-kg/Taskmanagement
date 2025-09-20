@@ -58,7 +58,67 @@ const fetchTasks = async () => {
   };
 
   return (
-    <div className="task-list-container">
+    // <div className="task-list-container">
+    //   <div className="task-list-header">
+    //     <h1>Task List</h1>
+    //     <button className="add-task-btn" onClick={() => setIsModalOpen(true)}>
+    //       + Add Task
+    //     </button>
+    //   </div>
+
+    //   <table className="task-table">
+    //     <thead>
+    //       <tr>
+    //         <th>Task Name</th>
+    //         <th>Description</th>
+    //         <th>Scheduled Time</th>
+    //         <th>Role</th>
+    //         <th>Assigned To</th>
+    //         <th>Status</th>
+    //         <th>repeat</th>
+    //         <th>Actions</th>
+    //       </tr>
+    //     </thead>
+    //     <tbody>
+    //       {tasks.length > 0 ? (
+    //         tasks.map((t) => (
+    //           <tr key={t._id}>
+    //             <td>{t.taskName}</td>
+    //             <td>{t.description || "—"}</td>
+    //             <td>{new Date(t.scheduledTime).toLocaleString()}</td>
+    //             <td>{t.role}</td>
+    //             <td>{t.assignedTo ? t.assignedTo.name : "Myself"}</td>
+    //             <td>{t.status}</td>
+    //             <td>{t.repeat}</td>
+    //             <td>
+    //               <button className="edit-btn">Edit</button>
+    //               <button
+    //                 className="delete-btn"
+    //                 onClick={() => handleDelete(t._id)}
+    //               >
+    //                 Delete
+    //               </button>
+    //             </td>
+    //           </tr>
+    //         ))
+    //       ) : (
+    //         <tr>
+    //           <td colSpan="6" style={{ textAlign: "center" }}>
+    //             No tasks found
+    //           </td>
+    //         </tr>
+    //       )}
+    //     </tbody>
+    //   </table>
+
+    //   {/* Task Assign Modal */}
+    //   <ManagerTaskAssignModal
+    //     isOpen={isModalOpen}
+    //     onClose={() => setIsModalOpen(false)}
+    //     onCreated={fetchTasks}
+    //   />
+    // </div>
+     <div className="task-list-container">
       <div className="task-list-header">
         <h1>Task List</h1>
         <button className="add-task-btn" onClick={() => setIsModalOpen(true)}>
@@ -66,52 +126,53 @@ const fetchTasks = async () => {
         </button>
       </div>
 
-      <table className="task-table">
-        <thead>
-          <tr>
-            <th>Task Name</th>
-            <th>Description</th>
-            <th>Scheduled Time</th>
-            <th>Role</th>
-            <th>Assigned To</th>
-            <th>Status</th>
-            <th>repeat</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tasks.length > 0 ? (
-            tasks.map((t) => (
-              <tr key={t._id}>
-                <td>{t.taskName}</td>
-                <td>{t.description || "—"}</td>
-                <td>{new Date(t.scheduledTime).toLocaleString()}</td>
-                <td>{t.role}</td>
-                <td>{t.assignedTo ? t.assignedTo.name : "Myself"}</td>
-                <td>{t.status}</td>
-                <td>{t.repeat}</td>
-                <td>
-                  <button className="edit-btn">Edit</button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => handleDelete(t._id)}
-                  >
-                    Delete
-                  </button>
+      <div className="table-wrapper">
+        <table className="task-table">
+          <thead>
+            <tr>
+              <th>Task Name</th>
+              <th>Description</th>
+              <th>Scheduled Time</th>
+              <th>Role</th>
+              <th>Assigned To</th>
+              <th>Status</th>
+              <th>Repeat</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks.length > 0 ? (
+              tasks.map((t) => (
+                <tr key={t._id}>
+                  <td>{t.taskName}</td>
+                  <td>{t.description || "—"}</td>
+                  <td>{new Date(t.scheduledTime).toLocaleString()}</td>
+                  <td>{t.role}</td>
+                  <td>{t.assignedTo ? t.assignedTo.name : "Myself"}</td>
+                  <td>{t.status}</td>
+                  <td>{t.repeat}</td>
+                  <td>
+                    <button className="edit-btn">Edit</button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(t._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" style={{ textAlign: "center" }}>
+                  No tasks found
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="6" style={{ textAlign: "center" }}>
-                No tasks found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
 
-      {/* Task Assign Modal */}
       <ManagerTaskAssignModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
