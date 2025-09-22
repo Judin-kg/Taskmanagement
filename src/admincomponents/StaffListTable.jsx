@@ -129,7 +129,7 @@ export default function StaffListTable() {
     <div className="staff-list-container">
       <div className="staff-list-header">
         <h1>Staff List</h1>
-        <button className="add-staff-btn" onClick={() => setIsModalOpen(true)}>
+        <button className="add-task-btn" onClick={() => setIsModalOpen(true)}>
           ➕ Add Staff
         </button>
       </div>
