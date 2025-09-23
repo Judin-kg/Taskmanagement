@@ -8,7 +8,7 @@ export default function ManagerList() {
 
   const [managers, setManagers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false); // state for modal
-
+   const [searchQuery, setSearchQuery] = useState(""); // ✅ new state for filter
   const fetchManagers = async () => {
     try {
       const res = await axios.get("https://task-managment-server-neon.vercel.app/api/managers");
@@ -22,6 +22,11 @@ export default function ManagerList() {
   useEffect(() => {
     fetchManagers();
   }, []);
+
+   // ✅ Filter managers safely
+  const filteredManagers = managers.filter((m) =>
+    (m.name || "").toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     // <div className="manager-list-container">
@@ -77,6 +82,14 @@ export default function ManagerList() {
       {/* Header */}
       <div className="manager-list-header">
         <h1>Manager List</h1>
+         {/* ✅ Search Input */}
+        <input
+          type="text"
+          className="form-control w-50"
+          placeholder="Search Name..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
         <button
           className="add-manager-btn"
           onClick={() => setIsModalOpen(true)}
@@ -96,7 +109,7 @@ export default function ManagerList() {
               <th>Department</th>
             </tr>
           </thead>
-          <tbody>
+          {/* <tbody>
             {managers.length > 0 ? (
               managers.map((m) => (
                 <tr key={m._id}>
@@ -104,6 +117,24 @@ export default function ManagerList() {
                   <td>{m.contactNumber || "-"}</td>
                   <td>{m.email}</td>
                   <td>{m.departmentId ? m.departmentId.name : "-"}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                  No managers found
+                </td>
+              </tr>
+            )}
+          </tbody> */}
+           <tbody>
+            {filteredManagers.length > 0 ? (
+              filteredManagers.map((m) => (
+                <tr key={m._id}>
+                  <td>{m.name || "-"}</td>
+                  <td>{m.contactNumber || "-"}</td>
+                  <td>{m.email || "-"}</td>
+                  <td>{m.departmentId?.name || "-"}</td>
                 </tr>
               ))
             ) : (

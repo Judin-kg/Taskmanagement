@@ -71,6 +71,7 @@ import AddCompanyModalForm from "./AddCompanyModalForm";
 export default function CompanyListTable() {
   const [companies, setCompanies] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+   const [searchTerm, setSearchTerm] = useState(""); // ✅ search term state
 
   const fetchCompanies = async () => {
     try {
@@ -84,6 +85,11 @@ export default function CompanyListTable() {
   useEffect(() => {
     fetchCompanies();
   }, []);
+
+   // ✅ Filter companies based on search term
+  const filteredCompanies = companies.filter((c) =>
+    c.name?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Delete a company
   const handleDelete = async (id) => {
@@ -103,13 +109,23 @@ export default function CompanyListTable() {
 
   return (
     <div className="company-list-container">
+      <h1>Company List</h1>
       <div className="company-list-header">
-        <h1>Company List</h1>
+        
+
+        {/* ✅ Search Input */}
+        <input
+          type="text"
+          placeholder="Search by name..."
+          className="form-control w-50"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <button className="add-company-btn" onClick={() => setIsModalOpen(true)}>
           + Add Company
         </button>
       </div>
-
+    <div className="table-wrapper">
       <table className="company-table">
         <thead>
           <tr>
@@ -117,18 +133,36 @@ export default function CompanyListTable() {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
+        {/* <tbody>
           {companies.length > 0 ? (
             companies.map((c) => (
               <tr key={c._id}>
                 <td>{c.name}</td>
                 <td>
-                  {/* <button
-                    className="edit-btn"
-                    onClick={() => handleEdit(c)}
+                 
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(c._id)}
                   >
-                    Edit
-                  </button> */}
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="2" style={{ textAlign: "center" }}>
+                No companies found
+              </td>
+            </tr>
+          )}
+        </tbody> */}
+        <tbody>
+          {filteredCompanies.length > 0 ? (
+            filteredCompanies.map((c) => (
+              <tr key={c._id}>
+                <td>{c.name}</td>
+                <td>
                   <button
                     className="delete-btn"
                     onClick={() => handleDelete(c._id)}
@@ -147,6 +181,7 @@ export default function CompanyListTable() {
           )}
         </tbody>
       </table>
+      </div>
 
       {/* Add Company Modal */}
       <AddCompanyModalForm

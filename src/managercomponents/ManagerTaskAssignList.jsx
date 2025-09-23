@@ -7,7 +7,8 @@ import ManagerTaskAssignModal from "./ManagerTaskAssignModal";
 function ManagerTaskAssignList() {
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+   const [searchName, setSearchName] = useState(""); // Task name filter
+  const [searchDate, setSearchDate] = useState(""); // Date filter
   // Fetch tasks
   
 //   const fetchTasks = async () => {
@@ -56,6 +57,15 @@ const fetchTasks = async () => {
       alert("Failed to delete task");
     }
   };
+
+   // Filter tasks based on name and date
+  const filteredTasks = tasks.filter((t) => {
+    const matchesName = t.taskName?.toLowerCase().includes(searchName.toLowerCase());
+    const matchesDate = searchDate
+      ? new Date(t.scheduledTime).toISOString().split("T")[0] === searchDate
+      : true;
+    return matchesName && matchesDate;
+  });
 
   return (
     // <div className="task-list-container">
@@ -119,12 +129,29 @@ const fetchTasks = async () => {
     //   />
     // </div>
      <div className="task-list-container">
+      <h1>Task List</h1>
       <div className="task-list-header">
-        <h1>Task List</h1>
-        <button className="add-task-btn" onClick={() => setIsModalOpen(true)}>
+        
+         <div className="filters" style={{ display: "flex", gap: "10px" }}>
+          <input
+            type="text"
+            placeholder="Search by Task Name"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            className="form-control"
+          />
+          <input
+            type="date"
+            value={searchDate}
+            onChange={(e) => setSearchDate(e.target.value)}
+            className="form-control"
+          />
+        </div>
+       
+      </div>
+       <button className="add-task-btn mb-2" style={{float:"right"}} onClick={() => setIsModalOpen(true)}>
           + Add Task
         </button>
-      </div>
 
       <div className="table-wrapper">
         <table className="task-table">
@@ -140,7 +167,7 @@ const fetchTasks = async () => {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          {/* <tbody>
             {tasks.length > 0 ? (
               tasks.map((t) => (
                 <tr key={t._id}>
@@ -169,7 +196,35 @@ const fetchTasks = async () => {
                 </td>
               </tr>
             )}
+          </tbody> */}
+          <tbody>
+            {filteredTasks.length > 0 ? (
+              filteredTasks.map((t) => (
+                <tr key={t._id}>
+                  <td>{t.taskName}</td>
+                  <td>{t.description || "—"}</td>
+                  <td>{new Date(t.scheduledTime).toLocaleString()}</td>
+                  <td>{t.role}</td>
+                  <td>{t.assignedTo ? t.assignedTo.name : "Myself"}</td>
+                  <td>{t.status}</td>
+                  <td>{t.repeat}</td>
+                  <td>
+                    <button className="edit-btn">Edit</button>
+                    <button className="delete-btn" onClick={() => handleDelete(t._id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" style={{ textAlign: "center" }}>
+                  No tasks found
+                </td>
+              </tr>
+            )}
           </tbody>
+
         </table>
       </div>
 

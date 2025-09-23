@@ -110,7 +110,7 @@ import AddStaffModal from "./AddStaffModal";
 export default function StaffListTable() {
   const [staff, setStaff] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [searchQuery, setSearchQuery] = useState("");
   // Fetch staff list
   const fetchStaff = async () => {
     try {
@@ -125,12 +125,25 @@ export default function StaffListTable() {
     fetchStaff();
   }, []);
 
+   // ✅ Filter staff based on name
+   const filteredStaff = staff.filter((s) =>
+    (s.name || "").toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="staff-list-container">
       <div className="staff-list-header">
         <h1>Staff List</h1>
+         {/* ✅ Search Input */}
+        <input
+          type="text"
+          className="form-control w-50"
+          placeholder="Search by staff..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
         <button className="add-task-btn" onClick={() => setIsModalOpen(true)}>
-          ➕ Add Staff
+          + Add Staff
         </button>
       </div>
 
@@ -146,9 +159,28 @@ export default function StaffListTable() {
               <th>Role</th>
             </tr>
           </thead>
-          <tbody>
+          {/* <tbody>
             {staff.length > 0 ? (
               staff.map((s) => (
+                <tr key={s._id}>
+                  <td>{s.name}</td>
+                  <td>{s.assistantManager ? s.assistantManager.name : "-"}</td>
+                  <td>{s.contactNumber || "-"}</td>
+                  <td>{s.email}</td>
+                  <td>{s.role}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" style={{ textAlign: "center" }}>
+                  No staff found
+                </td>
+              </tr>
+            )}
+          </tbody> */}
+           <tbody>
+            {filteredStaff.length > 0 ? (
+              filteredStaff.map((s) => (
                 <tr key={s._id}>
                   <td>{s.name}</td>
                   <td>{s.assistantManager ? s.assistantManager.name : "-"}</td>

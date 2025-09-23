@@ -149,6 +149,8 @@
 @media (max-width: 480px) {
   .dashboard-title {
     font-size: 1.3rem;
+    text-align: center;
+    
   }
 
   .chart-wrapper {
@@ -165,4 +167,34 @@
     min-width: 600px; /* ✅ keeps horizontal scroll */
   }
 }
+.task-filters {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
 
+.task-filters input[type="text"],
+.task-filters input[type="date"] {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+  .task-filters {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .task-filters input {
+    width: 100%;
+  }
+
+  .add-task-btn {
+    align-self: flex-end;
+  }
+}

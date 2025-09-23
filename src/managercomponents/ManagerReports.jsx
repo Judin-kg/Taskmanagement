@@ -4,6 +4,8 @@ import "./ManagerReports.css";
 export default function ManagerReport() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+   const [searchName, setSearchName] = useState(""); // Task Name filter
+  const [searchDate, setSearchDate] = useState(""); // Created Date filter
 const manager = JSON.parse(localStorage.getItem("manager"));
   // const token = localStorage.getItem("managerToken");
   useEffect(() => {
@@ -21,6 +23,18 @@ const manager = JSON.parse(localStorage.getItem("manager"));
     }
   };
 console.log(tasks,"tasssssssssssssssssssssssss");
+
+
+ // Filter tasks by name and created date
+  const filteredTasks = tasks.filter((task) => {
+    const matchesName = task.taskName
+      ?.toLowerCase()
+      .includes(searchName.toLowerCase());
+    const matchesDate = searchDate
+      ? new Date(task.createdAt).toISOString().split("T")[0] === searchDate
+      : true;
+    return matchesName && matchesDate;
+  });
 
   if (loading) return <p className="text-center mt-4">Loading tasks...</p>;
 
@@ -94,7 +108,24 @@ console.log(tasks,"tasssssssssssssssssssssssss");
         📋 Manager Task Report
       </h1>
 
-      {tasks.length === 0 ? (
+       {/* Filters */}
+      <div className="filters mb-4 flex gap-4 justify-center">
+        <input
+          type="text"
+          placeholder="Search by Task.."
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+          className="form-control w-50 mb-2"
+        />
+        <input
+          type="date"
+          value={searchDate}
+          onChange={(e) => setSearchDate(e.target.value)}
+          className="form-control w-50"
+        />
+      </div>
+
+      {filteredTasks.length === 0 ? (
         <p className="text-center text-gray-500">
           No tasks found for this manager.
         </p>
@@ -115,7 +146,7 @@ console.log(tasks,"tasssssssssssssssssssssssss");
                 <th>Created At</th>
               </tr>
             </thead>
-            <tbody>
+            {/* <tbody>
               {Array.isArray(tasks) &&
                 tasks.map((task, index) => (
                   <tr key={task._id} className="hover:bg-gray-50">
@@ -158,6 +189,39 @@ console.log(tasks,"tasssssssssssssssssssssssss");
                       {new Date(task.scheduledTime).toLocaleString()}
                     </td>
                     <td data-label="Created At" className="border px-4 py-2">
+                      {new Date(task.createdAt).toLocaleString()}
+                    </td>
+                  </tr>
+                ))}
+            </tbody> */}
+              <tbody>
+              {Array.isArray(filteredTasks) &&
+                filteredTasks.map((task, index) => (
+                  <tr key={task._id} className="hover:bg-gray-50">
+                    <td className="border px-4 py-2">{index + 1}</td>
+                    <td className="border px-4 py-2">{task.taskName}</td>
+                    <td className="border px-4 py-2">{task.description}</td>
+                    <td className="border px-4 py-2 capitalize">{task.role}</td>
+                    <td className="border px-4 py-2">{task.assignedTo?.name || "N/A"}</td>
+                    <td className="border px-4 py-2">{task.assignedBy || "N/A"}</td>
+                    <td className="border px-4 py-2">{task.repeat}</td>
+                    <td
+                      className={`border px-4 py-2 font-semibold ${
+                        task.status === "completed"
+                          ? "text-green-600"
+                          : task.status === "pending"
+                          ? "text-yellow-600"
+                          : task.status === "in-progress"
+                          ? "text-blue-600"
+                          : "text-gray-500"
+                      }`}
+                    >
+                      {task.status}
+                    </td>
+                    <td className="border px-4 py-2">
+                      {new Date(task.scheduledTime).toLocaleString()}
+                    </td>
+                    <td className="border px-4 py-2">
                       {new Date(task.createdAt).toLocaleString()}
                     </td>
                   </tr>

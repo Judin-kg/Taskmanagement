@@ -9,6 +9,9 @@ function AsstManagerTaskAssignList() {
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [searchName, setSearchName] = useState(""); // Task Name filter
+  const [searchDate, setSearchDate] = useState(""); // Scheduled Date filter
+
   // Fetch tasks
   
 //   const fetchTasks = async () => {
@@ -60,6 +63,19 @@ const fetchTasks = async () => {
       alert("Failed to delete task");
     }
   };
+
+   // ✅ Filter tasks based on searchName & searchDate
+  const filteredTasks = tasks.filter((task) => {
+    const matchesName = task.taskName
+      ?.toLowerCase()
+      .includes(searchName.toLowerCase());
+    const matchesDate = searchDate
+      ? new Date(task.scheduledTime).toISOString().split("T")[0] === searchDate
+      : true;
+
+    return matchesName && matchesDate;
+  });
+
 
   return (
     // <div className="task-list-container">
@@ -123,12 +139,43 @@ const fetchTasks = async () => {
     //   />
     // </div>
     <div className="task-list-container">
+      <h1>Task List</h1>
   <div className="task-list-header">
-    <h1>Task List</h1>
-    <button className="add-task-btn" onClick={() => setIsModalOpen(true)}>
+    
+
+     {/* ✅ Filter Section */}
+      <div className="filters" style={{ marginBottom: "1rem", display: "flex", gap: "1rem" }}>
+        <input
+          type="text"
+          placeholder="Search a Task"
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
+          style={{
+            padding: "8px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            flex: 1,
+          }}
+          className="form-control w-50"
+        />
+        <input
+          type="date"
+          value={searchDate}
+          onChange={(e) => setSearchDate(e.target.value)}
+          style={{
+            padding: "8px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+          }}
+          className="form-control w-50"
+        />
+      </div>
+   
+  </div>
+
+   <button className="add-task-btn mb-2" style={{float:"right"}}  onClick={() => setIsModalOpen(true)}>
       + Add Task
     </button>
-  </div>
 
   {/* Table Wrapper for horizontal scroll */}
   <div className="table-wrapper">
@@ -145,7 +192,7 @@ const fetchTasks = async () => {
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody>
+      {/* <tbody>
         {tasks.length > 0 ? (
           tasks.map((t) => (
             <tr key={t._id}>
@@ -174,7 +221,37 @@ const fetchTasks = async () => {
             </td>
           </tr>
         )}
-      </tbody>
+      </tbody> */}
+       <tbody>
+            {filteredTasks.length > 0 ? (
+              filteredTasks.map((t) => (
+                <tr key={t._id}>
+                  <td>{t.taskName}</td>
+                  <td>{t.description || "—"}</td>
+                  <td>{new Date(t.scheduledTime).toLocaleString()}</td>
+                  <td>{t.role}</td>
+                  <td>{t.assignedTo ? t.assignedTo.name : "Myself"}</td>
+                  <td>{t.status}</td>
+                  <td>{t.repeat}</td>
+                  <td>
+                    <button className="edit-btn">Edit</button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(t._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" style={{ textAlign: "center" }}>
+                  No tasks found
+                </td>
+              </tr>
+            )}
+          </tbody>
     </table>
   </div>
 

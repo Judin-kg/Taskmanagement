@@ -9,7 +9,7 @@ import axios from "axios";
 //   const { logout } = useContext(AuthContext);
   const [assistants, setAssistants] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+ const [searchTerm, setSearchTerm] = useState(""); // ✅ Search term state
   const fetchAssistants = async () => {
     try {
       const res = await axios.get("https://task-managment-server-neon.vercel.app/api/assistant-managers");
@@ -22,6 +22,12 @@ import axios from "axios";
   useEffect(() => {
     fetchAssistants();
   }, []);
+
+   // ✅ Filtered assistants based on search term
+  const filteredAssistants = assistants.filter((am) =>
+    am.name?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
 
   return (
     // <div className="assistant-manager-list-container">
@@ -78,6 +84,14 @@ import axios from "axios";
      <div className="assistant-manager-list-container">
       <div className="assistant-manager-list-header">
         <h1>Assistant Manager List</h1>
+         {/* ✅ Search Input */}
+        <input
+          type="text"
+          placeholder="Search by name..."
+          className="form-control w-50"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <button
           className="add-assistant-btn"
           onClick={() => setIsModalOpen(true)}
@@ -97,9 +111,27 @@ import axios from "axios";
               <th>Role</th>
             </tr>
           </thead>
-          <tbody>
+          {/* <tbody>
             {assistants.length > 0 ? (
               assistants.map((am) => (
+                <tr key={am._id}>
+                  <td>{am.name}</td>
+                  <td>{am.managerId ? am.managerId.name : "-"}</td>
+                  <td>{am.contactNumber || "-"}</td>
+                  <td>{am.role}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                  No Assistant Managers found
+                </td>
+              </tr>
+            )}
+          </tbody> */}
+           <tbody>
+            {filteredAssistants.length > 0 ? (
+              filteredAssistants.map((am) => (
                 <tr key={am._id}>
                   <td>{am.name}</td>
                   <td>{am.managerId ? am.managerId.name : "-"}</td>

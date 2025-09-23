@@ -13,7 +13,8 @@ import {
 function TaskListTable() {
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+   const [searchQuery, setSearchQuery] = useState("");
+  const [filterDate, setFilterDate] = useState("");
   // Fetch tasks
   
   const fetchTasks = async () => {
@@ -57,6 +58,19 @@ function TaskListTable() {
   ];
 
   const COLORS = ["#facc15", "#3b82f6", "#22c55e"]; // yellow, blue, green
+
+   // ✅ Filter logic
+  const filteredTasks = tasks.filter((t) => {
+    const matchesSearch = t.taskName
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+
+    const matchesDate = filterDate
+      ? new Date(t.scheduledTime).toISOString().split("T")[0] === filterDate
+      : true;
+
+    return matchesSearch && matchesDate;
+  });
 
   return (
     // <div className="task-list-container">
@@ -169,12 +183,33 @@ function TaskListTable() {
         </ResponsiveContainer>
       </div>
 
+      <h1 className="dashboard-title mt-5">Task List</h1>
+
       <div className="task-list-header">
-        <h1 className="dashboard-title">Task List</h1>
-        <button className="add-task-btn" onClick={() => setIsModalOpen(true)}>
+           
+        
+        <div className="task-filters">
+          <input
+            type="text"
+            placeholder="Search by task name..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <input
+            type="date"
+            value={filterDate}
+            onChange={(e) => setFilterDate(e.target.value)}
+          />
+          </div>
+        {/* <button className="add-task-btn" onClick={() => setIsModalOpen(true)}>
+          + Add Task
+        </button> */}
+      </div>
+
+       <button className="add-task-btn mb-2" style={{float:"right"}} onClick={() => setIsModalOpen(true)}>
           + Add Task
         </button>
-      </div>
+      
 
       {/* ✅ Table Wrapper for Scroll on Mobile/Tablet */}
       <div className="table-wrapper">
@@ -191,9 +226,39 @@ function TaskListTable() {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          {/* <tbody>
             {tasks.length > 0 ? (
               tasks.map((t) => (
+                <tr key={t._id}>
+                  <td>{t.taskName}</td>
+                  <td>{t.description || "—"}</td>
+                  <td>{new Date(t.scheduledTime).toLocaleString()}</td>
+                  <td>{t.role}</td>
+                  <td>{t.assignedTo ? t.assignedTo.name : "Myself"}</td>
+                  <td>{t.status}</td>
+                  <td>{t.repeat}</td>
+                  <td>
+                    <button className="edit-btn">Edit</button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(t._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="8" style={{ textAlign: "center" }}>
+                  No tasks found
+                </td>
+              </tr>
+            )}
+          </tbody> */}
+           <tbody>
+            {filteredTasks.length > 0 ? (
+              filteredTasks.map((t) => (
                 <tr key={t._id}>
                   <td>{t.taskName}</td>
                   <td>{t.description || "—"}</td>
