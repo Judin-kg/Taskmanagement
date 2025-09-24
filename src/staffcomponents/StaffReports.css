@@ -93,3 +93,71 @@
   }
 }
 
+/* 🔎 Filter Styles */
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.filter-input {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+}
+
+.filter-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+.clear-btn {
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease-in-out;
+}
+
+.clear-btn:hover {
+  background: #d32f2f;
+}
+.export-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.export-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s ease-in-out;
+}
+
+.export-btn.pdf {
+  background-color: #e53935;
+  color: white;
+}
+
+.export-btn.pdf:hover {
+  background-color: #c62828;
+}
+
+.export-btn.excel {
+  background-color: #43a047;
+  color: white;
+}
+
+.export-btn.excel:hover {
+  background-color: #2e7d32;
+}

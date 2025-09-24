@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./StaffReports.css";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import * as XLSX from "xlsx";
+import autoTable from "jspdf-autotable"; // ✅ Import the plugin
+
 export default function StaffReports() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // ✅ Filter states
+  const [searchTerm, setSearchTerm] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
+
 const staff = JSON.parse(localStorage.getItem("user"));
   // const token = localStorage.getItem("managerToken");
   useEffect(() => {
@@ -23,7 +33,100 @@ const staff = JSON.parse(localStorage.getItem("user"));
 console.log(tasks,"tasssssssssssssssssssssssss");
 
   if (loading) return <p className="text-center mt-4">Loading tasks...</p>;
+ // ✅ Apply filters
+  // const filteredTasks = tasks.filter((task) => {
+  //   const matchesName = task.taskName
+  //     .toLowerCase()
+  //     .includes(searchTerm.toLowerCase());
 
+  //   const matchesDate = dateFilter
+  //     ? new Date(task.createdAt).toISOString().split("T")[0] === dateFilter
+  //     : true;
+
+  //   return matchesName && matchesDate;
+  // });
+
+  const filteredTasks = Array.isArray(tasks)
+  ? tasks.filter((task) => {
+      const matchesName = task.taskName
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+
+      const matchesDate = dateFilter
+        ? new Date(task.createdAt).toISOString().split("T")[0] === dateFilter
+        : true;
+
+      return matchesName && matchesDate;
+    })
+  : [];
+
+
+
+   // ✅ PDF Export
+  
+  const exportPDF = () => {
+  const doc = new jsPDF();
+  doc.text("📋 Staff Task Report", 14, 10);
+
+  const tableColumn = [
+    "#",
+    "Task Name",
+    "Description",
+    "Role",
+    "Assigned To",
+    "Assigned By",
+    "Repeat",
+    "Status",
+    "Scheduled Time",
+    "Created At",
+  ];
+
+  const tableRows = filteredTasks.map((task, index) => [
+    index + 1,
+    task.taskName,
+    task.description || "—",
+    task.role,
+    task.assignedTo?.name || "N/A",
+    task.assignedBy || "N/A",
+    task.repeat,
+    task.status,
+    new Date(task.scheduledTime).toLocaleString(),
+    new Date(task.createdAt).toLocaleString(),
+  ]);
+
+  // ✅ Use autoTable(doc, {...}) instead of doc.autoTable(...)
+  autoTable(doc, {
+    head: [tableColumn],
+    body: tableRows,
+    startY: 20,
+    styles: { fontSize: 8 },
+  });
+
+  doc.save("staff-task-report.pdf");
+};
+
+
+  // ✅ Excel Export
+  const exportExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(
+      filteredTasks.map((task, index) => ({
+        "#": index + 1,
+        "Task Name": task.taskName,
+        Description: task.description || "—",
+        Role: task.role,
+        "Assigned To": task.assignedTo?.name || "N/A",
+        "Assigned By": task.assignedBy || "N/A",
+        Repeat: task.repeat,
+        Status: task.status,
+        "Scheduled Time": new Date(task.scheduledTime).toLocaleString(),
+        "Created At": new Date(task.createdAt).toLocaleString(),
+      }))
+    );
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Tasks");
+    XLSX.writeFile(workbook, "staff-task-report.xlsx");
+  };
   return (
     // <div className="p-6">
     //   <h1 className="text-2xl font-bold text-center mb-6">📋Staff Task Report</h1>
@@ -89,8 +192,47 @@ console.log(tasks,"tasssssssssssssssssssssssss");
     // </div>
       <div className="staff-reports-container">
       <h1 className="report-title">📋 Staff Task Report</h1>
+        {/* 🔎 Filter Section */}
+      <div className="filter-container">
+        <input
+          type="text"
+          placeholder="🔍 Search by task name"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="filter-input"
+        />
 
-      {tasks.length === 0 ? (
+        <input
+          type="date"
+          value={dateFilter}
+          onChange={(e) => setDateFilter(e.target.value)}
+          className="filter-input"
+        />
+
+        {(searchTerm || dateFilter) && (
+          <button
+            className="clear-btn"
+            onClick={() => {
+              setSearchTerm("");
+              setDateFilter("");
+            }}
+          >
+            ❌ Clear
+          </button>
+        )}
+      </div>
+
+      {/* 📥 Export Buttons */}
+      <div className="export-container">
+        <button className="export-btn pdf" onClick={exportPDF}>
+          📄 Export PDF
+        </button>
+        <button className="export-btn excel" onClick={exportExcel}>
+          📊 Export Excel
+        </button>
+      </div>
+
+      {filteredTasks.length === 0 ? (
         <p className="no-tasks-text">No tasks found for this manager.</p>
       ) : (
         <div className="table-responsive">
@@ -109,7 +251,7 @@ console.log(tasks,"tasssssssssssssssssssssssss");
                 <th>Created At</th>
               </tr>
             </thead>
-            <tbody>
+            {/* <tbody>
               {tasks.map((task, index) => (
                 <tr key={task._id}>
                   <td>{index + 1}</td>
@@ -124,7 +266,25 @@ console.log(tasks,"tasssssssssssssssssssssssss");
                   <td>{new Date(task.createdAt).toLocaleString()}</td>
                 </tr>
               ))}
+            </tbody> */}
+
+             <tbody>
+              {filteredTasks.map((task, index) => (
+                <tr key={task._id}>
+                  <td>{index + 1}</td>
+                  <td>{task.taskName}</td>
+                  <td>{task.description}</td>
+                  <td>{task.role}</td>
+                  <td>{task.assignedTo?.name || "N/A"}</td>
+                  <td>{task.assignedBy || "N/A"}</td>
+                  <td>{task.repeat}</td>
+                  <td className={`status ${task.status}`}>{task.status}</td>
+                  <td>{new Date(task.scheduledTime).toLocaleString()}</td>
+                  <td>{new Date(task.createdAt).toLocaleString()}</td>
+                </tr>
+              ))}
             </tbody>
+
           </table>
         </div>
       )}

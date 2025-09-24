@@ -276,7 +276,7 @@ export default function ManagerAssignList() {
                 </tr>
               </thead>
               <tbody>
-                {tasks.map((task) => (
+                {Array.isArray(tasks) && tasks.map((task)=> (
                   <tr key={task._id}>
                     <td>{task.taskName}</td>
                     <td>{task.description || "-"}</td>

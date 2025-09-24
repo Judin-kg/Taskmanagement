@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./ManagerReports.css";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
 export default function ManagerReport() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,15 +29,91 @@ console.log(tasks,"tasssssssssssssssssssssssss");
 
 
  // Filter tasks by name and created date
-  const filteredTasks = tasks.filter((task) => {
-    const matchesName = task.taskName
-      ?.toLowerCase()
-      .includes(searchName.toLowerCase());
-    const matchesDate = searchDate
-      ? new Date(task.createdAt).toISOString().split("T")[0] === searchDate
-      : true;
-    return matchesName && matchesDate;
-  });
+  // const filteredTasks = tasks.filter((task) => {
+  //   const matchesName = task.taskName
+  //     ?.toLowerCase()
+  //     .includes(searchName.toLowerCase());
+  //   const matchesDate = searchDate
+  //     ? new Date(task.createdAt).toISOString().split("T")[0] === searchDate
+  //     : true;
+  //   return matchesName && matchesDate;
+  // });
+
+  const filteredTasks = Array.isArray(tasks)
+  ? tasks.filter((task) => {
+      const matchesName = task.taskName
+        ?.toLowerCase()
+        .includes(searchName.toLowerCase());
+      const matchesDate = searchDate
+        ? new Date(task.createdAt).toISOString().split("T")[0] === searchDate
+        : true;
+      return matchesName && matchesDate;
+    })
+  : []; // fallback empty array if tasks is not an array
+
+
+ // ✅ Export to PDF
+  const exportPDF = () => {
+    const doc = new jsPDF();
+    doc.text("📋 Manager Task Report", 14, 10);
+
+    const tableColumn = [
+      "#",
+      "Task Name",
+      "Description",
+      "Role",
+      "Assigned To",
+      "Assigned By",
+      "Repeat",
+      "Status",
+      "Scheduled Time",
+      "Created At",
+    ];
+
+    const tableRows = filteredTasks.map((task, index) => [
+      index + 1,
+      task.taskName,
+      task.description || "—",
+      task.role,
+      task.assignedTo?.name || "N/A",
+      task.assignedBy || "N/A",
+      task.repeat,
+      task.status,
+      new Date(task.scheduledTime).toLocaleString(),
+      new Date(task.createdAt).toLocaleString(),
+    ]);
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 20,
+      styles: { fontSize: 8 },
+    });
+
+    doc.save("manager-task-report.pdf");
+  };
+
+  // ✅ Export to Excel
+  const exportExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(
+      filteredTasks.map((task, index) => ({
+        "#": index + 1,
+        "Task Name": task.taskName,
+        Description: task.description || "—",
+        Role: task.role,
+        "Assigned To": task.assignedTo?.name || "N/A",
+        "Assigned By": task.assignedBy || "N/A",
+        Repeat: task.repeat,
+        Status: task.status,
+        "Scheduled Time": new Date(task.scheduledTime).toLocaleString(),
+        "Created At": new Date(task.createdAt).toLocaleString(),
+      }))
+    );
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Manager Tasks");
+    XLSX.writeFile(wb, "manager-task-report.xlsx");
+  };
+
 
   if (loading) return <p className="text-center mt-4">Loading tasks...</p>;
 
@@ -123,6 +202,19 @@ console.log(tasks,"tasssssssssssssssssssssssss");
           onChange={(e) => setSearchDate(e.target.value)}
           className="form-control w-50"
         />
+      </div>
+
+        {/* Export Buttons */}
+      <div className="flex justify-center mb-4">
+     
+        <button onClick={exportPDF} className="btn btn-primary me-3">
+          📄 Export PDF
+        </button> 
+       
+        <button onClick={exportExcel} className="btn btn-success">
+          📊 Export Excel
+        </button>
+        
       </div>
 
       {filteredTasks.length === 0 ? (
