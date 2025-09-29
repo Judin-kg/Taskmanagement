@@ -261,6 +261,7 @@ export default function AsstManagerAssignList() {
                   <th>Description</th>
                   <th>Scheduled Time</th>
                   <th>Assigned By</th>
+                  <th>Company</th>
                   <th>Repeat</th>
                   <th>Status</th>
                 </tr>
@@ -272,6 +273,7 @@ export default function AsstManagerAssignList() {
                     <td>{task.description}</td>
                     <td>{new Date(task.scheduledTime).toLocaleString()}</td>
                     <td>{task.assignedBy}</td>
+                    <td>{task.company?.name || "N/A"}</td>
                     <td>{task.repeat || "once"}</td>
                     <td>
                       <select

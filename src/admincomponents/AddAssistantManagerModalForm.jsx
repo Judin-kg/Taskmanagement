@@ -6,7 +6,7 @@ function AddAssistantManagerModalForm({ isOpen, onClose, onCreated }) {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    password: "123456", // default password
+    password: "", // default password
     contactNumber: "",
     managerId: "",
   });
@@ -40,7 +40,7 @@ useEffect(() => {
       setForm({
         name: "",
         email: "",
-        password: "123456",
+        password: "",
         contactNumber: "",
         managerId: "",
       });
@@ -75,6 +75,17 @@ useEffect(() => {
             onChange={handleChange}
             required
           />
+
+            {/* ✅ Password Field Added */}
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+          
           <input
             type="text"
             name="contactNumber"

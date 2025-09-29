@@ -85,7 +85,7 @@ const StaffLogin = () => {
 
         <div className="admin-login-container">
       <div className="admin-login-card">
-        <h2 className="admin-login-title">Login</h2>
+        <h2 className="admin-login-title"> Staff Login</h2>
 
         {message && <div className="admin-login-error">{message}</div>}
 

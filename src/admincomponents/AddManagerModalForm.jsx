@@ -84,7 +84,7 @@ function AddManagerModalForm({ isOpen, onClose, onCreated }) {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    password: "123456", // default password
+    password: "", // default password
     contactNumber: "",
     departmentId: "", // NEW field
   });
@@ -112,7 +112,7 @@ function AddManagerModalForm({ isOpen, onClose, onCreated }) {
       setForm({
         name: "",
         email: "",
-        password: "123456",
+        password: "",
         contactNumber: "",
         departmentId: "",
       });
@@ -147,6 +147,17 @@ function AddManagerModalForm({ isOpen, onClose, onCreated }) {
             onChange={handleChange}
             required
           />
+
+           {/* Password field */}
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+          
           <input
             type="text"
             name="contactNumber"

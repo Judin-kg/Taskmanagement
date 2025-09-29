@@ -16,6 +16,7 @@ import StaffListTable from "./StaffListTable.jsx";
 import TaskListTable from "./TaskListTable.jsx";
 import TaskReports from "./TaskReports.jsx";
 import { motion, AnimatePresence } from "framer-motion";
+import HierarchyView from "./HierarchyView.jsx";
 // Sidebar items
 const NAV_ITEMS = [
   { key: "dashboard", label: "Dashboard" },
@@ -25,6 +26,7 @@ const NAV_ITEMS = [
   { key: "staff", label: "Staff" },
    { key: "department", label: "Department" },
    { key: "company", label: "Company" },
+   { key: "hierarchy", label: "Hierarchy" },
   { key: "reports", label: "Reports" },
 ];
 
@@ -188,6 +190,7 @@ function AdminDashboard() {
               {active === "staff" && <StaffListTable />}
               {active === "department" && <DepartmentList />}
               {active === "company" && <CompanyListTable />}
+              {active === "hierarchy" && <HierarchyView />}
               {active === "reports" && <TaskReports />}
             </motion.div>
           </AnimatePresence>

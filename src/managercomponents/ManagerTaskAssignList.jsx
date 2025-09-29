@@ -9,6 +9,8 @@ function ManagerTaskAssignList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
    const [searchName, setSearchName] = useState(""); // Task name filter
   const [searchDate, setSearchDate] = useState(""); // Date filter
+  const [roleFilter, setRoleFilter] = useState(""); // ✅ Role filter
+  const [nameFilter, setNameFilter] = useState(""); // ✅ Subcategory (name) filter
   // Fetch tasks
   
 //   const fetchTasks = async () => {
@@ -27,7 +29,7 @@ const fetchTasks = async () => {
       return;
     }
 
-    const res = await axios.get("https://task-managment-server-neon.vercel.app/api/tasks");
+    const res = await axios.get("https://task-managment-server-neon.vercel.app/api/tasks/tasks");
 
     // ✅ Filter tasks to only show ones assigned by this manager
     const filteredTasks = res.data.filter(
@@ -50,7 +52,7 @@ const fetchTasks = async () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this task?")) return;
     try {
-      await axios.delete(`https://task-managment-server-neon.vercel.app/api/tasks/${id}`);
+      await axios.delete(`https://task-managment-server-neon.vercel.app.app/api/tasks/${id}`);
       fetchTasks(); // refresh after delete
     } catch (err) {
       console.error("Error deleting task:", err);
@@ -58,13 +60,50 @@ const fetchTasks = async () => {
     }
   };
 
+
+  
+
    // Filter tasks based on name and date
+  // const filteredTasks = tasks.filter((t) => {
+  //   const matchesName = t.taskName?.toLowerCase().includes(searchName.toLowerCase());
+  //   const matchescompany = t.company?.name.toLowerCase().includes(searchName.toLowerCase());
+  //   const matchesDate = searchDate
+  //     ? new Date(t.scheduledTime).toISOString().split("T")[0] === searchDate
+  //     : true;
+  //   return matchesName||matchescompany && matchesDate;
+  // });
+
+   // ✅ Dynamic name options based on selected role
+  const availableNames = [
+    ...new Set(
+      tasks
+        .filter((t) =>
+          roleFilter ? t.role?.toLowerCase() === roleFilter.toLowerCase() : true
+        )
+        .map((t) => t.assignedTo?.name)
+        .filter(Boolean)
+    ),
+  ];
+
+  // ✅ Combined Filtering Logic
   const filteredTasks = tasks.filter((t) => {
-    const matchesName = t.taskName?.toLowerCase().includes(searchName.toLowerCase());
+    const matchesSearch =
+      t.taskName?.toLowerCase().includes(searchName.toLowerCase()) ||
+      t.company?.name?.toLowerCase().includes(searchName.toLowerCase());
+
     const matchesDate = searchDate
       ? new Date(t.scheduledTime).toISOString().split("T")[0] === searchDate
       : true;
-    return matchesName && matchesDate;
+
+    const matchesRole = roleFilter
+      ? t.role?.toLowerCase() === roleFilter.toLowerCase()
+      : true;
+
+    const matchesName = nameFilter
+      ? t.assignedTo?.name?.toLowerCase() === nameFilter.toLowerCase()
+      : true;
+
+    return matchesSearch && matchesDate && matchesRole && matchesName;
   });
 
   return (
@@ -135,7 +174,7 @@ const fetchTasks = async () => {
          <div className="filters" style={{ display: "flex", gap: "10px" }}>
           <input
             type="text"
-            placeholder="Search by Task Name"
+            placeholder="Search....."
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
             className="form-control"
@@ -146,6 +185,50 @@ const fetchTasks = async () => {
             onChange={(e) => setSearchDate(e.target.value)}
             className="form-control"
           />
+
+           {/* Role Filter */}
+          <select
+            className="form-select"
+            value={roleFilter}
+            onChange={(e) => {
+              setRoleFilter(e.target.value);
+              setNameFilter(""); // Reset name filter when role changes
+            }}
+          >
+            <option value="">All Roles</option>
+            <option value="myself">Myself</option>
+            <option value="assistantmanager">Assistant Manager</option>
+            <option value="staff">Staff</option>
+          </select>
+
+          {/* Dynamic Name Filter - Visible only if there are names for selected role */}
+          {availableNames.length > 0 && (
+            <select
+              className="form-select"
+              value={nameFilter}
+              onChange={(e) => setNameFilter(e.target.value)}
+            >
+              <option value="">All Names</option>
+              {availableNames.map((name, i) => (
+                <option key={i} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          )}
+
+          {/* Clear Filters */}
+          <button
+            className="btn btn-outline-secondary"
+            onClick={() => {
+              setSearchName("");
+              setSearchDate("");
+              setRoleFilter("");
+              setNameFilter("");
+            }}
+          >
+            Clear Filters
+          </button>
         </div>
        
       </div>
@@ -162,6 +245,7 @@ const fetchTasks = async () => {
               <th>Scheduled Time</th>
               <th>Role</th>
               <th>Assigned To</th>
+              <th>Company</th>
               <th>Status</th>
               <th>Repeat</th>
               <th>Actions</th>
@@ -206,6 +290,7 @@ const fetchTasks = async () => {
                   <td>{new Date(t.scheduledTime).toLocaleString()}</td>
                   <td>{t.role}</td>
                   <td>{t.assignedTo ? t.assignedTo.name : "Myself"}</td>
+                  <td>{t.company?.name}</td>
                   <td>{t.status}</td>
                   <td>{t.repeat}</td>
                   <td>

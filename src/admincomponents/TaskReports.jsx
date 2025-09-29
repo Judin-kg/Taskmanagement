@@ -14,15 +14,23 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
+import {jsPDF} from "jspdf";
+import autoTable from "jspdf-autotable"; // ✅ Explicitly attach plugin
+import * as XLSX from "xlsx";
 
 export default function TaskReports() {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
-
+   const [tasks, setTasks] = useState([]);
+   const [searchQuery, setSearchQuery] = useState("");
+  const [filterDate, setFilterDate] = useState("");
+  const [roleFilter, setRoleFilter] = useState(""); // ✅ NEW state for role filtering
+  const [nameFilter, setNameFilter] = useState(""); // ✅ Name Filter (sub-category)
   const COLORS = ["#FFBB28", "#00C49F", "#FF8042", "#8884d8", "#0088FE"];
 
   useEffect(() => {
     fetchReports();
+    fetchTasks();
   }, []);
 
   const fetchReports = async () => {
@@ -33,6 +41,16 @@ export default function TaskReports() {
       console.error("❌ Error fetching reports:", err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchTasks = async () => {
+    try {
+      const res = await axios.get("https://task-managment-server-neon.vercel.app/api/tasks/tasks");
+      setTasks(res.data);
+      console.log("Fetched taskssssssss:", res.data);
+    } catch (err) {
+      console.error("Error fetching tasks:", err);
     }
   };
 
@@ -55,12 +73,128 @@ export default function TaskReports() {
     value: user.count,
   }));
 
+  
+// const filteredTasks = tasks.filter((t) => {
+//   const matchesSearch =
+//     t.taskName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+//     t.company?.name?.toLowerCase().includes(searchQuery.toLowerCase());
+
+//   const matchesDate = filterDate
+//     ? new Date(t.createdAt).toISOString().split("T")[0] === filterDate
+//     : true;
+
+//      const matchesRole = roleFilter
+//       ? t.role?.toLowerCase() === roleFilter.toLowerCase()
+//       : true;
+
+//   return matchesSearch && matchesDate && matchesRole; // ✅ Ensure BOTH search & date match
+// });
+
+
+
+ // ✅ Get unique names based on selected role
+
+
+  const availableNames =
+    roleFilter && tasks.length > 0
+      ? Array.from(
+          new Set(
+            tasks
+              .filter((t) => t.role?.toLowerCase() === roleFilter.toLowerCase())
+              .map((t) => t.assignedTo?.name || "N/A")
+          )
+        )
+      : [];
+
+  // ✅ Filter Logic (Search + Date + Role + Name)
+  const filteredTasks = tasks.filter((t) => {
+    const matchesSearch = searchQuery
+      ? t.taskName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.company?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+      : true;
+
+    const matchesDate = filterDate
+      ? new Date(t.createdAt).toISOString().split("T")[0] === filterDate
+      : true;
+
+    const matchesRole = roleFilter
+      ? t.role?.toLowerCase() === roleFilter.toLowerCase()
+      : true;
+
+    const matchesName = nameFilter
+      ? t.assignedTo?.name === nameFilter
+      : true;
+
+    return matchesSearch && matchesDate && matchesRole && matchesName;
+  });
+
+
+
+const exportPDF = () => {
+  const doc = new jsPDF();
+
+  doc.text("Task Report", 14, 10);
+
+  const tableData = filteredTasks.map((task, i) => [
+    i + 1,
+        new Date(task.createdAt).toLocaleString(),
+        task.taskName,
+        task.company?.name || "N/A",
+        task.role,
+        task.assignedTo?.name || "N/A",
+        task.status,
+        task.repeat,
+  ]);
+      // styles: { fontSize: 8 },
+      // theme: "grid",
+  autoTable(doc, {
+    head: [
+      [
+        "#",
+          "Created At",
+          "Task Name",
+          "Company",
+          "Role",
+          "Assigned To",
+          "Status",
+          "Repeat",
+      ],
+    ],
+    body: tableData,
+    startY: 20,
+  });
+
+  doc.save("task_report.pdf");
+};
+
+
+  // ✅ Excel Export
+  const exportExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(
+      filteredTasks.map((t, index) => ({
+        "#": index + 1,
+        "Created At": new Date(t.createdAt).toLocaleString(),
+        "Task Name": t.taskName,
+        "Company": t.company?.name || "N/A",
+        "Role": t.role,
+        "Assigned To": t.assignedTo?.name || "N/A",
+        "Status": t.status,
+        "Repeat": t.repeat,
+      }))
+    );
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Tasks");
+    XLSX.writeFile(workbook, "Task_Report.xlsx");
+  };
+
+
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold text-center mb-6">📊 Task Reports</h1>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-blue-100 p-4 rounded-xl shadow">
           <h2 className="text-lg font-semibold text-blue-900">Total Tasks</h2>
           <p className="text-2xl font-bold">{report.totalTasks}</p>
@@ -77,7 +211,37 @@ export default function TaskReports() {
             {report.statusCounts?.completed || 0}
           </p>
         </div>
+      </div> */}
+
+   <div className="container my-4">
+  <div className="row g-3">
+    {/* Total Tasks */}
+    <div className="col-12 col-md-4">
+      <div className="card shadow-sm text-center p-3">
+        <h2 className="h5 text-primary mb-2">Total Tasks</h2>
+        <p className="fs-4 fw-bold">{report.totalTasks}</p>
       </div>
+    </div>
+
+    {/* Pending */}
+    <div className="col-12 col-md-4">
+      <div className="card shadow-sm text-center p-3">
+        <h2 className="h5 text-warning mb-2">Pending</h2>
+        <p className="fs-4 fw-bold text-warning">{report.statusCounts?.pending || 0}</p>
+      </div>
+    </div>
+
+    {/* Completed */}
+    <div className="col-12 col-md-4">
+      <div className="card shadow-sm text-center p-3">
+        <h2 className="h5 text-success mb-2">Completed</h2>
+        <p className="fs-4 fw-bold text-success">{report.statusCounts?.completed || 0}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
       {/* Pie Chart - Task Status */}
       <div className="bg-white p-4 rounded-xl shadow mb-6">
@@ -133,42 +297,157 @@ export default function TaskReports() {
       </div>
 
         {/* 📋 Table View */}
-      <div className="bg-white p-4 rounded-xl shadow">
-        <h2 className="text-xl font-semibold mb-4">Task Report Table</h2>
-        <table className="min-w-full border-collapse border border-gray-200">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2 text-left">Category</th>
-              <th className="border p-2 text-left">Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Status Counts */}
-            {statusData.map((s, i) => (
-              <tr key={`status-${i}`}>
-                <td className="border p-2 font-medium">{s.name || "Unknown"}</td>
-                <td className="border p-2">{s.value}</td>
-              </tr>
-            ))}
 
-            {/* Repeat Counts */}
-            {repeatData.map((r, i) => (
-              <tr key={`repeat-${i}`}>
-                <td className="border p-2 font-medium">{r.name}</td>
-                <td className="border p-2">{r.value}</td>
-              </tr>
-            ))}
+              <div className="bg-white p-4 rounded-xl shadow mt-6">
+             
+        <h2 className="text-xl font-semibold mb-4">📋Tasks report</h2>
 
-            {/* Top Users
-            {topUserData.map((u, i) => (
-              <tr key={`user-${i}`}>
-                <td className="border p-2 font-medium">User {u.name}</td>
-                <td className="border p-2">{u.value}</td>
+        {/* ✅ Export Buttons */}
+          <button className="btn btn-danger ms-auto me-2" onClick={exportPDF}>Export PDF</button>
+          <button className="btn btn-success" onClick={exportExcel}>Export Excel</button>
+
+          <div className="task-filters">
+          <input
+            type="text"
+            placeholder="Search....."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <input
+            type="date"
+            value={filterDate}
+            onChange={(e) => setFilterDate(e.target.value)}
+          />
+
+          {/* Role Filter
+          <select
+            className="form-select w-50"
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value)}
+          >
+            <option value="">All Roles</option>
+            <option value="manager">Manager</option>
+            <option value="assistantmanager">Assistant Manager</option>
+            <option value="myself">Myself</option>
+          </select>
+
+          <button
+            className="btn btn-outline-secondary"
+            onClick={() => {
+              setSearchQuery("");
+              setFilterDate("");
+              setRoleFilter("");
+            }}
+          >
+            Clear Filters
+          </button> */}
+
+
+          {/* Role Filter */}
+          <select
+            className="form-select w-50"
+            value={roleFilter}
+            onChange={(e) => {
+              setRoleFilter(e.target.value);
+              setNameFilter(""); // reset name filter when role changes
+            }}
+          >
+            <option value="">All Roles</option>
+            <option value="manager">Manager</option>
+            <option value="assistantmanager">Assistant Manager</option>
+            <option value="myself">Myself</option>
+            {/* <option value="staff">Staff</option> */}
+          </select>
+
+          {/* Name Filter (only show if a role is selected) */}
+          {roleFilter && (
+            <select
+              className="form-select w-50"
+              value={nameFilter}
+              onChange={(e) => setNameFilter(e.target.value)}
+            >
+              <option value="">All {roleFilter}s</option>
+              {availableNames.map((name, i) => (
+                <option key={i} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          )}
+
+          {/* Clear Filters */}
+          <button
+            className="btn btn-outline-secondary"
+            onClick={() => {
+              setSearchQuery("");
+              setFilterDate("");
+              setRoleFilter("");
+              setNameFilter("");
+            }}
+          >
+            Clear Filters
+          </button>
+        
+        </div>
+        <div className="table-responsive">
+          <table className="table table-bordered table-striped table-hover">
+            <thead className="table-light">
+              <tr>
+                <th>#</th>
+                <th>Created At</th>
+                <th>Task Name</th>
+                <th>Description</th>
+                <th>Company</th>
+                <th>Role</th>
+                <th>Assigned To</th>
+                <th>Status</th>
+                <th>Repeat</th>
+                <th>Scheduled Time</th>
+                
               </tr>
-            ))} */}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filteredTasks.length > 0 ? (
+                filteredTasks.map((task, index) => (
+                  <tr key={task._id}>
+                    <td>{index + 1}</td>
+                     <td>{new Date(task.createdAt).toLocaleString()}</td>
+                    <td>{task.taskName}</td>
+                    <td>{task.description || "—"}</td>
+                    <td>{task.company?.name || "N/A"}</td>  
+                    <td className="text-capitalize">{task.role}</td>
+                    <td>{task.assignedTo?.name || "N/A"}</td>
+                    <td>
+                      <span
+                        className={`badge ${
+                          task.status === "completed"
+                            ? "bg-success"
+                            : task.status === "pending"
+                            ? "bg-warning text-dark"
+                            : "bg-secondary"
+                        }`}
+                      >
+                        {task.status}
+                      </span>
+                    </td>
+                    <td>{task.repeat}</td>
+                    <td>{new Date(task.scheduledTime).toLocaleString()}</td>
+                   
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="9" className="text-center">
+                    No tasks found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        </div>
+
+      
     </div>
   );
 }

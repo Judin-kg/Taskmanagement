@@ -181,3 +181,59 @@
     gap: 10px;
   }
 }
+/* Container for buttons inside the table cell */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Reset & Delete Button Styles */
+.reset-btn,
+.delete-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+/* Reset Button (Blue) */
+.reset-btn {
+  background-color: #2563eb;
+  color: white;
+}
+
+.reset-btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* Delete Button (Red) */
+.delete-btn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626;
+}
+
+/* ✅ Responsive: Stack buttons vertically on smaller screens */
+@media (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .reset-btn,
+  .delete-btn {
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}

@@ -4,12 +4,16 @@ import React, { useEffect, useState, useContext } from "react";
 import "./AssistantManagerList.css";
 import AddAssistantManagerModalForm from "./AddAssistantManagerModalForm";
 import axios from "axios";
+import ResetAssistantManagerPassword from "./ResetAssistantManagerPassword";
 
  function AssistantManagerList() {
 //   const { logout } = useContext(AuthContext);
   const [assistants, setAssistants] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
  const [searchTerm, setSearchTerm] = useState(""); // ✅ Search term state
+  
+  const [selectedAssistantId, setSelectedAssistantId] = useState(null);
+
   const fetchAssistants = async () => {
     try {
       const res = await axios.get("https://task-managment-server-neon.vercel.app/api/assistant-managers");
@@ -28,6 +32,21 @@ import axios from "axios";
     am.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // ✅ Delete Assistant Manager
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this assistant manager?")) return;
+
+    try {
+      await axios.delete(
+        `https://task-managment-server-neon.vercel.app/api/assistant-managers/${id}`
+      );
+      fetchAssistants(); // Refresh list
+    } catch (err) {
+      console.error("Error deleting assistant manager:", err);
+      alert("Failed to delete assistant manager");
+    }
+  };
+console.log(selectedAssistantId,"selectedAssistantIdddddddd");
 
   return (
     // <div className="assistant-manager-list-container">
@@ -109,6 +128,7 @@ import axios from "axios";
               <th>Under Manager</th>
               <th>Contact Number</th>
               <th>Role</th>
+              <th>Action</th> {/* ✅ New column */}
             </tr>
           </thead>
           {/* <tbody>
@@ -137,6 +157,24 @@ import axios from "axios";
                   <td>{am.managerId ? am.managerId.name : "-"}</td>
                   <td>{am.contactNumber || "-"}</td>
                   <td>{am.role}</td>
+                  <td>
+  <div className="action-buttons">
+    {/* ✅ Reset Password Button */}
+    <button
+      className="reset-btn"
+      onClick={() => setSelectedAssistantId(am._id)}
+    >
+      🔑 Reset Password
+    </button>
+    <button
+      className="delete-btn"
+      onClick={() => handleDelete(am._id)}
+    >
+      🗑 Delete
+    </button>
+  </div>
+</td>
+
                 </tr>
               ))
             ) : (
@@ -156,6 +194,14 @@ import axios from "axios";
         onClose={() => setIsModalOpen(false)}
         onCreated={fetchAssistants}
       />
+
+        {selectedAssistantId && (
+        <ResetAssistantManagerPassword
+          assistantId={selectedAssistantId}
+          onClose={() => setSelectedAssistantId(null)}
+          onPasswordReset={fetchAssistants}
+        />
+      )}
     </div>
   );
 }

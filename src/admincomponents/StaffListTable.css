@@ -123,3 +123,40 @@
     gap: 10px;
   }
 }
+
+.actions-cell {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.reset-btn,
+.delete-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.reset-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .actions-cell {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .reset-btn,
+  .delete-btn {
+    width: 100%;
+  }
+}

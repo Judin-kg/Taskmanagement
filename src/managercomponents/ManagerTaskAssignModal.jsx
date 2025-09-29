@@ -12,9 +12,12 @@ function ManagerTaskAssignModal({ isOpen, onClose, onCreated }) {
     assignedBy: "", // ✅ new field
     status: "pending", // ✅ new status field
     repeat: "once", // ✅ new repeat field
+    company: { id: "", name: "" },
   });
 
   const [users, setUsers] = useState([]);
+   const [companies, setCompanies] = useState([]); // ✅ NEW
+
     const loggedUser = JSON.parse(localStorage.getItem("manager")); // <- Get logged-in user
     console.log("Logged-in userrrrrrrrrrrrrrr:", loggedUser.id);
      console.log(localStorage,"localStoragegegegegegege");
@@ -26,6 +29,20 @@ function ManagerTaskAssignModal({ isOpen, onClose, onCreated }) {
       setForm((prev) => ({ ...prev, assignedBy: loggedUser.id }));
     }
   }, [loggedUser]);
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const res = await axios.get("https://task-managment-server-neon.vercel.app/api/companies");
+        setCompanies(res.data);
+
+        console.log("Fetched companiessssssss:", companies);
+      } catch (err) {
+        console.error("Error fetching companies:", err);
+      }
+    };
+    if (isOpen) fetchCompanies();
+  }, [isOpen]);
 
     
   useEffect(() => {
@@ -52,8 +69,24 @@ function ManagerTaskAssignModal({ isOpen, onClose, onCreated }) {
     }
   }, [form.role]);
 
+  // const handleChange = (e) => {
+  //   setForm({ ...form, [e.target.name]: e.target.value });
+  // };
+
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    // ✅ Handle company selection
+    if (name === "company") {
+      const selectedCompany = companies.find((c) => c._id === value);
+      console.log("Selected companyyyyyyyyyyyyyyy:", selectedCompany);
+      
+      setForm((prev) => ({
+        ...prev,
+        company: { id: selectedCompany._id, name: selectedCompany.name },
+      }));
+    } else {
+      setForm((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -211,6 +244,16 @@ console.log("Form dataaaaaaaaaaaaaaa:", form);
             onChange={handleChange}
             required
           />
+
+           {/* ✅ Company Dropdown */}
+            <select name="company" value={form.company.id} onChange={handleChange} required>
+              <option value="">Select Company</option>
+              {companies.map((c) => (
+                <option key={c._id} value={c._id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
 
           <select name="role" value={form.role} onChange={handleChange} required>
             <option value="">Select Role</option>

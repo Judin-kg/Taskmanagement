@@ -130,6 +130,36 @@ export default function StaffListTable() {
     (s.name || "").toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // ✅ Delete staff
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this staff member?")) return;
+    try {
+      await axios.delete(
+        `https://task-managment-server-neon.vercel.app/api/auth/${id}`
+      );
+      fetchStaff(); // Refresh staff list
+    } catch (err) {
+      console.error("Error deleting staff:", err);
+      alert("Failed to delete staff");
+    }
+  };
+
+  const handleResetPassword = async (id) => {
+  const newPassword = prompt("Enter new password for staff:");
+  if (!newPassword) return;
+
+  try {
+    await axios.put(
+      `https://task-managment-server-neon.vercel.app/api/auth/${id}/reset-password`,
+      { newPassword }
+    );
+    alert("Password reset successfully!");
+  } catch (err) {
+    console.error("Error resetting password:", err);
+    alert("Failed to reset password");
+  }
+};
+
   return (
     <div className="staff-list-container">
       <div className="staff-list-header">
@@ -157,6 +187,7 @@ export default function StaffListTable() {
               <th>Contact Number</th>
               <th>Email</th>
               <th>Role</th>
+              <th>Actions</th>
             </tr>
           </thead>
           {/* <tbody>
@@ -187,6 +218,29 @@ export default function StaffListTable() {
                   <td>{s.contactNumber || "-"}</td>
                   <td>{s.email}</td>
                   <td>{s.role}</td>
+                  {/* <td>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(s._id)}
+                    >
+                      🗑 Delete
+                    </button>
+                  </td> */}
+
+                  <td className="actions-cell">
+  <button
+    className="reset-btn"
+    onClick={() => handleResetPassword(s._id)}
+  >
+    🔑Password Reset
+  </button>
+  <button
+    className="delete-btn"
+    onClick={() => handleDelete(s._id)}
+  >
+    🗑 Delete
+  </button>
+</td>
                 </tr>
               ))
             ) : (

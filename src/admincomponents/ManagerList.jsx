@@ -9,6 +9,7 @@ export default function ManagerList() {
   const [managers, setManagers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false); // state for modal
    const [searchQuery, setSearchQuery] = useState(""); // ✅ new state for filter
+    //  const [resetId, setResetId] = useState(null);
   const fetchManagers = async () => {
     try {
       const res = await axios.get("https://task-managment-server-neon.vercel.app/api/managers");
@@ -27,6 +28,35 @@ export default function ManagerList() {
   const filteredManagers = managers.filter((m) =>
     (m.name || "").toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+   // ✅ DELETE manager
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this manager?")) return;
+    try {
+      await axios.delete(
+        `https://task-managment-server-neon.vercel.app/api/managers/${id}`
+      );
+      setManagers((prev) => prev.filter((m) => m._id !== id)); // update UI immediately
+    } catch (err) {
+      console.error("Error deleting manager:", err);
+      alert("Failed to delete manager");
+    }
+  };
+
+   const handleResetPassword = async (id) => {
+    const newPassword = prompt("Enter new password:");
+    if (!newPassword) return;
+
+    try {
+      await axios.put(`https://task-managment-server-neon.vercel.app/api/managers/${id}/reset-password`, {
+        newPassword,
+      });
+      alert("Password reset successfully!");
+    } catch (err) {
+      console.error("Error resetting password:", err);
+      alert("Failed to reset password");
+    }
+  };
 
   return (
     // <div className="manager-list-container">
@@ -107,6 +137,7 @@ export default function ManagerList() {
               <th>Contact Number</th>
               <th>Email</th>
               <th>Department</th>
+              <th>Actions</th>
             </tr>
           </thead>
           {/* <tbody>
@@ -135,6 +166,28 @@ export default function ManagerList() {
                   <td>{m.contactNumber || "-"}</td>
                   <td>{m.email || "-"}</td>
                   <td>{m.departmentId?.name || "-"}</td>
+                   {/* <td>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(m._id)}
+                    >
+                      🗑 Delete
+                    </button>
+                  </td> */}
+                  <td className="actions-cell">
+                    <button
+                      className="reset-btn"
+                      onClick={() => handleResetPassword(m._id)}
+                    >
+                      🔑 Reset Password
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(m._id)}
+                    >
+                      🗑 Delete
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (

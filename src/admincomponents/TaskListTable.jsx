@@ -19,8 +19,10 @@ function TaskListTable() {
   
   const fetchTasks = async () => {
     try {
-      const res = await axios.get("https://task-managment-server-neon.vercel.app/api/tasks");
+      const res = await axios.get("https://task-managment-server-neon.vercel.app/api/tasks/tasks");
       setTasks(res.data);
+
+      console.log("Fetched taskssssssss:", res.data);
     } catch (err) {
       console.error("Error fetching tasks:", err);
     }
@@ -60,17 +62,33 @@ function TaskListTable() {
   const COLORS = ["#facc15", "#3b82f6", "#22c55e"]; // yellow, blue, green
 
    // ✅ Filter logic
+  // const filteredTasks = tasks.filter((t) => {
+  //   const matchesSearch = t.taskName
+  //     .toLowerCase()
+  //     .includes(searchQuery.toLowerCase());
+
+  //     const companyNameMatch = t.company?.name
+  //   ?.toLowerCase()
+  //   .includes(searchQuery.toLowerCase());
+
+  //   const matchesDate = filterDate
+  //     ? new Date(t.scheduledTime).toISOString().split("T")[0] === filterDate
+  //     : true;
+
+  //   return matchesSearch ||companyNameMatch && matchesDate;
+  // });
   const filteredTasks = tasks.filter((t) => {
-    const matchesSearch = t.taskName
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
+  const matchesSearch =
+    t.taskName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    t.company?.name?.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesDate = filterDate
-      ? new Date(t.scheduledTime).toISOString().split("T")[0] === filterDate
-      : true;
+  const matchesDate = filterDate
+    ? new Date(t.createdAt).toISOString().split("T")[0] === filterDate
+    : true;
 
-    return matchesSearch && matchesDate;
-  });
+  return matchesSearch && matchesDate; // ✅ Ensure BOTH search & date match
+});
+
 
   return (
     // <div className="task-list-container">
@@ -191,7 +209,7 @@ function TaskListTable() {
         <div className="task-filters">
           <input
             type="text"
-            placeholder="Search by task name..."
+            placeholder="Search....."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
@@ -221,6 +239,7 @@ function TaskListTable() {
               <th>Scheduled Time</th>
               <th>Role</th>
               <th>Assigned To</th>
+              <th>Company</th>
               <th>Status</th>
               <th>Repeat</th>
               <th>Actions</th>
@@ -265,6 +284,7 @@ function TaskListTable() {
                   <td>{new Date(t.scheduledTime).toLocaleString()}</td>
                   <td>{t.role}</td>
                   <td>{t.assignedTo ? t.assignedTo.name : "Myself"}</td>
+                  <td>{t.company?.name}</td>
                   <td>{t.status}</td>
                   <td>{t.repeat}</td>
                   <td>

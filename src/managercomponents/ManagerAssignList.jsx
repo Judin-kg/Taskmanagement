@@ -104,7 +104,7 @@ export default function ManagerAssignList() {
       })
       .catch((err) => console.error("Error fetching manager tasks:", err))
       .finally(() => setLoading(false));
-  }, [manager, token]);
+  }, [token]);
 
   const handleStatusChange = async (taskId, newStatus) => {
     try {
@@ -271,6 +271,7 @@ export default function ManagerAssignList() {
                   <th>Description</th>
                   <th>Scheduled Time</th>
                   <th>Assigned By</th>
+                  <th>Company</th>
                   <th>Repeat</th>
                   <th>Status</th>
                 </tr>
@@ -282,6 +283,7 @@ export default function ManagerAssignList() {
                     <td>{task.description || "-"}</td>
                     <td>{new Date(task.scheduledTime).toLocaleString()}</td>
                     <td>{task.assignedBy || "Unknown"}</td>
+                    <td>{task.company?.name || "N/A"}</td>
                     <td>{task.repeat || "once"}</td>
                     <td>
                       <select
