@@ -176,7 +176,7 @@ function AddManagerModalForm({ isOpen, onClose, onCreated }) {
             className="form-control"
           >
             <option value="">Select Department</option>
-            {departments.map((dept) => (
+            {departments?.map((dept) => (
               <option key={dept._id} value={dept._id}>
                 {dept.name}
               </option>

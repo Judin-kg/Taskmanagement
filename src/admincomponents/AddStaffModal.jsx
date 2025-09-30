@@ -293,7 +293,7 @@ export default function AddStaffModal({ isOpen, onClose, onCreated }) {
             required
           >
             <option value="">Select Assistant Manager</option>
-            {assistantManagers.map((am) => (
+            {assistantManagers?.map((am) => (
               <option key={am._id} value={am._id}>
                 {am.name}
               </option>

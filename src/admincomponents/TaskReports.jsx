@@ -26,6 +26,7 @@ export default function TaskReports() {
   const [filterDate, setFilterDate] = useState("");
   const [roleFilter, setRoleFilter] = useState(""); // ✅ NEW state for role filtering
   const [nameFilter, setNameFilter] = useState(""); // ✅ Name Filter (sub-category)
+  const [statusFilter, setStatusFilter] = useState("");
   const COLORS = ["#FFBB28", "#00C49F", "#FF8042", "#8884d8", "#0088FE"];
 
   useEffect(() => {
@@ -125,7 +126,11 @@ export default function TaskReports() {
       ? t.assignedTo?.name === nameFilter
       : true;
 
-    return matchesSearch && matchesDate && matchesRole && matchesName;
+      const matchesStatus = statusFilter
+    ? t.status?.toLowerCase() === statusFilter.toLowerCase()
+    : true;
+
+    return matchesSearch && matchesDate && matchesRole && matchesName && matchesStatus;
   });
 
 
@@ -318,6 +323,17 @@ const exportPDF = () => {
             value={filterDate}
             onChange={(e) => setFilterDate(e.target.value)}
           />
+          {/* Status Filter */}
+<select
+  className="form-select w-50"
+  value={statusFilter}
+  onChange={(e) => setStatusFilter(e.target.value)}
+>
+  <option value="">All Status</option>
+  <option value="pending">Pending</option>
+  <option value="completed">Completed</option>
+  <option value="inprogress">In Progress</option>
+</select>
 
           {/* Role Filter
           <select
@@ -375,6 +391,7 @@ const exportPDF = () => {
             </select>
           )}
 
+
           {/* Clear Filters */}
           <button
             className="btn btn-outline-secondary"
@@ -383,6 +400,7 @@ const exportPDF = () => {
               setFilterDate("");
               setRoleFilter("");
               setNameFilter("");
+              setStatusFilter("")
             }}
           >
             Clear Filters
@@ -444,6 +462,8 @@ const exportPDF = () => {
               )}
             </tbody>
           </table>
+
+          
         </div>
         </div>
 

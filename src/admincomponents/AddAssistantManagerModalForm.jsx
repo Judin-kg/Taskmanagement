@@ -85,7 +85,7 @@ useEffect(() => {
             onChange={handleChange}
             required
           />
-          
+
           <input
             type="text"
             name="contactNumber"
@@ -103,7 +103,7 @@ useEffect(() => {
             required
           >
             <option value="">Select Manager</option>
-            {managers.map((m) => (
+            {managers?.map((m) => (
               <option key={m._id} value={m._id}>
                 {m.name} ({m.contactNumber})
               </option>
