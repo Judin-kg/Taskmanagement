@@ -15,7 +15,7 @@ function AddDepartmentModalForm({ isOpen, onClose, onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://task-managment-server-neon.vercel.app/api/departments", form);
+      await axios.post("https://task-managment-server-al5a.vercel.app/api/departments", form);
       setForm({ name: "", description: "" });
       if (onCreated) onCreated(); // refresh department list
       onClose();

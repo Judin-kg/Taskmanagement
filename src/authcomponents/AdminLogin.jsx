@@ -22,7 +22,7 @@ const AdminLogin = () => {
     setMessage('');
 
     try {
-      const res = await axios.post('https://task-managment-server-neon.vercel.app/api/auth/admin-login', formData);
+      const res = await axios.post('https://task-managment-server-al5a.vercel.app/api/auth/admin-login', formData);
       const { token, user } = res.data;
 
       if (user.role !== 'admin') {

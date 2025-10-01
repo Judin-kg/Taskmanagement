@@ -7,7 +7,7 @@ function ResetAssistantManagerPassword({ assistantId, onClose }) {
   const handleReset = async () => {
     try {
       await axios.put(
-        `https://task-managment-server-neon.vercel.app/api/assistant-managers/${assistantId}/reset-password`,
+        `https://task-managment-server-al5a.vercel.app/api/assistant-managers/${assistantId}/reset-password`,
         { newPassword }
       );
       alert("Password reset successfully!");

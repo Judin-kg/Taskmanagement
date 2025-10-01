@@ -114,7 +114,7 @@ export default function StaffListTable() {
   // Fetch staff list
   const fetchStaff = async () => {
     try {
-      const res = await axios.get("https://task-managment-server-neon.vercel.app/api/auth");
+      const res = await axios.get("https://task-managment-server-al5a.vercel.app/api/auth");
       setStaff(res.data);
     } catch (err) {
       console.error("Error fetching staff:", err);
@@ -135,7 +135,7 @@ export default function StaffListTable() {
     if (!window.confirm("Are you sure you want to delete this staff member?")) return;
     try {
       await axios.delete(
-        `https://task-managment-server-neon.vercel.app/api/auth/${id}`
+        `https://task-managment-server-al5a.vercel.app/api/auth/${id}`
       );
       fetchStaff(); // Refresh staff list
     } catch (err) {
@@ -150,7 +150,7 @@ export default function StaffListTable() {
 
   try {
     await axios.put(
-      `https://task-managment-server-neon.vercel.app/api/auth/${id}/reset-password`,
+      `https://task-managment-server-al5a.vercel.app/api/auth/${id}/reset-password`,
       { newPassword }
     );
     alert("Password reset successfully!");

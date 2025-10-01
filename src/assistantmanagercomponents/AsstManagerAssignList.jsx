@@ -94,7 +94,7 @@ export default function AsstManagerAssignList() {
     if (!assistantManager) return;
 
     axios
-      .get(`https://task-managment-server-neon.vercel.app/api/tasks/user/${assistantManager.id}`, {
+      .get(`https://task-managment-server-al5a.vercel.app/api/tasks/user/${assistantManager.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -108,7 +108,7 @@ export default function AsstManagerAssignList() {
   const handleStatusChange = async (taskId, newStatus) => {
     try {
       await axios.put(
-        `https://task-managment-server-neon.vercel.app/api/tasks/${taskId}`,
+        `https://task-managment-server-al5a.vercel.app/api/tasks/${taskId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -36,7 +36,7 @@ const fetchTasks = async () => {
       return;
     }
 
-    const res = await axios.get("https://task-managment-server-neon.vercel.app/api/tasks/tasks");
+    const res = await axios.get("https://task-managment-server-al5a.vercel.app/api/tasks/tasks");
 
     // ✅ Filter tasks to only show ones assigned by this manager
     const filteredTasks = res.data.filter(
@@ -74,7 +74,7 @@ const fetchTasks = async () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this task?")) return;
     try {
-      await axios.delete(`https://task-managment-server-neon.vercel.app/api/tasks/${id}`);
+      await axios.delete(`https://task-managment-server-al5a.vercel.app/api/tasks/${id}`);
       fetchTasks(); // refresh after delete
     } catch (err) {
       console.error("Error deleting task:", err);

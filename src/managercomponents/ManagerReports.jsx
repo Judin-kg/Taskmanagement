@@ -17,7 +17,7 @@ const manager = JSON.parse(localStorage.getItem("manager"));
 
   const fetchManagerTasks = async () => {
     try {
-      const res = await axios.get(`https://task-managment-server-neon.vercel.app/api/tasks/user/${manager.id}`);
+      const res = await axios.get(`https://task-managment-server-al5a.vercel.app/api/tasks/user/${manager.id}`);
       setTasks(res.data || []);
     } catch (err) {
       console.error("❌ Error fetching manager tasks:", err);

@@ -80,7 +80,7 @@ export default function AsstManagerLogin() {
     setError("");
 
     try {
-      const res = await axios.post("https://task-managment-server-neon.vercel.app/api/assistant-managers/login", form);
+      const res = await axios.post("https://task-managment-server-al5a.vercel.app/api/assistant-managers/login", form);
       localStorage.setItem("assistantManagerToken", res.data.token);
       localStorage.setItem("assistantManager", JSON.stringify(res.data.assistantManager));
       navigate("/asstmanager/dashboard");

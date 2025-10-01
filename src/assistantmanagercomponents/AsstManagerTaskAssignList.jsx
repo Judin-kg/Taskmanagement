@@ -33,7 +33,7 @@ company: { id: "", name: "" },
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const res = await axios.get("https://task-managment-server-neon.vercel.app/api/companies");
+        const res = await axios.get("https://task-managment-server-al5a.vercel.app/api/companies");
         setCompanies(res.data);
 
         console.log("Fetched companiessssssss:", companies);
@@ -61,7 +61,7 @@ company: { id: "", name: "" },
 
       if (endpoint) {
         axios
-          .get(`https://task-managment-server-neon.vercel.app${endpoint}`)
+          .get(`https://task-managment-server-al5a.vercel.app${endpoint}`)
           .then((res) => setUsers(res.data))
           .catch((err) => console.error("Error fetching users:", err));
       } else {
@@ -92,7 +92,7 @@ company: { id: "", name: "" },
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://task-managment-server-neon.vercel.app/api/tasks", form);
+      await axios.post("https://task-managment-server-al5a.vercel.app/api/tasks", form);
       setForm({
         taskName: "",
         description: "",

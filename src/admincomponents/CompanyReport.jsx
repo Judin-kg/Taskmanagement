@@ -13,7 +13,7 @@ export default function CompanyReport() {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get("https://task-managment-server-neon.vercel.app/api/tasks/tasks");
+      const res = await axios.get("https://task-managment-server-al5a.vercel.app/api/tasks/tasks");
       setTasks(res.data);
       generateCompanyReport(res.data);
     } catch (err) {
