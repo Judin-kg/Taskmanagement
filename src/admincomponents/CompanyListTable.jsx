@@ -75,7 +75,7 @@ export default function CompanyListTable() {
 
   const fetchCompanies = async () => {
     try {
-      const res = await axios.get("https://task-managment-server-al5a.vercel.app.app/api/companies");
+      const res = await axios.get("https://task-managment-server-al5a.vercel.app/api/companies");
       setCompanies(res.data);
     } catch (err) {
       console.error("Error fetching companies:", err);
