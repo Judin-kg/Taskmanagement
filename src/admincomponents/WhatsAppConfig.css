@@ -1,0 +1,142 @@
+.whatsapp-config-container {
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.whatsapp-config-container h2 {
+  margin-bottom: 24px;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.config-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.status-section,
+.actions-section,
+.qr-section,
+.info-section {
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: #f9f9f9;
+}
+
+.status-section h3,
+.actions-section h3,
+.qr-section h3,
+.info-section h3 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #555;
+}
+
+.status-section p {
+  margin: 0;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.status-section p.info {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.status-section p.error {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.instance-info {
+  margin-top: 12px;
+  padding: 12px;
+  background: #fff;
+  border-radius: 4px;
+  font-family: monospace;
+  word-break: break-all;
+}
+
+.actions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-primary {
+  padding: 12px 24px;
+  background: #25d366;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #20ba5a;
+}
+
+.btn-primary:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.qr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.qr-code {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  border: 2px solid #25d366;
+  border-radius: 8px;
+  padding: 8px;
+  background: white;
+}
+
+.instruction {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.info-section ol {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.8;
+}
+
+.info-section li {
+  margin-bottom: 8px;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .whatsapp-config-container {
+    padding: 16px;
+  }
+
+  .whatsapp-config-container h2 {
+    font-size: 20px;
+  }
+
+  .qr-code {
+    max-width: 250px;
+  }
+}

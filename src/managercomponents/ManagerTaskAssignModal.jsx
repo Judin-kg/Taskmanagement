@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./ManagerTaskAssignModal.css";
+import { sendTaskAssignmentWhatsApp } from "../services/whatsappService";
 
 function ManagerTaskAssignModal({ isOpen, onClose, onCreated }) {
   const [form, setForm] = useState({
@@ -92,7 +93,33 @@ function ManagerTaskAssignModal({ isOpen, onClose, onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://task-managment-server-al5a.vercel.app/api/tasks", form);
+      const response = await axios.post("https://task-managment-server-al5a.vercel.app/api/tasks", form);
+
+      if (form.role !== "myself" && form.assignedTo) {
+        const assignedUser = users.find(u => u._id === form.assignedTo);
+        if (assignedUser && assignedUser.phone) {
+          const taskDetails = {
+            taskName: form.taskName,
+            description: form.description,
+            scheduledTime: form.scheduledTime,
+            status: form.status,
+            company: form.company,
+            assignedBy: { name: loggedUser?.name || "Manager" }
+          };
+
+          const whatsappResult = await sendTaskAssignmentWhatsApp(
+            assignedUser.phone,
+            taskDetails
+          );
+
+          if (whatsappResult.success) {
+            console.log("WhatsApp notification sent successfully");
+          } else {
+            console.warn("WhatsApp notification failed:", whatsappResult.message);
+          }
+        }
+      }
+
       setForm({
         taskName: "",
         description: "",

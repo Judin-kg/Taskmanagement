@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import HierarchyView from "./HierarchyView.jsx";
 import CompanyReport from "./CompanyReport.jsx";
 import CompanyTaskReport from "./CompanyTaskReport.jsx";
+import WhatsAppConfig from "./WhatsAppConfig.jsx";
 // Sidebar items
 const NAV_ITEMS = [
   { key: "dashboard", label: "Dashboard" },
@@ -31,6 +32,7 @@ const NAV_ITEMS = [
    { key: "hierarchy", label: "Hierarchy" },
   { key: "reports", label: "Task Reports" },
   { key: "companyreports", label: "Company Reports" },
+  { key: "whatsapp", label: "WhatsApp Config" },
 ];
 
 function AdminDashboard() {
@@ -197,6 +199,7 @@ function AdminDashboard() {
               {active === "hierarchy" && <HierarchyView />}
               {active === "reports" && <TaskReports />}
               {active === "companyreports" && <CompanyReport />}
+              {active === "whatsapp" && <WhatsAppConfig />}
             </motion.div>
           </AnimatePresence>
         </main>
