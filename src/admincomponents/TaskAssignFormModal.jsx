@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./TaskAssignFormModal.css";
-import { sendWhatsAppMessage, getUserPhoneNumber } from "../services/whatsappService";
 
 function TaskAssignFormModal({ isOpen, onClose, onCreated }) {
   const [form, setForm] = useState({
@@ -94,32 +93,16 @@ function TaskAssignFormModal({ isOpen, onClose, onCreated }) {
     e.preventDefault();
     try {
       await axios.post("https://task-managment-server-al5a.vercel.app/api/tasks", form);
-
-      if (form.role !== "myself" && form.assignedTo) {
-        const phoneNumber = await getUserPhoneNumber(form.assignedTo, form.role);
-
-        if (phoneNumber) {
-          const taskDetails = {
-            taskName: form.taskName,
-            description: form.description,
-            scheduledTime: form.scheduledTime,
-            assignedBy: loggedUser?.username || "Admin",
-            companyName: form.company.name
-          };
-
-          await sendWhatsAppMessage(phoneNumber, taskDetails);
-        }
-      }
-
       setForm({
         taskName: "",
         description: "",
         scheduledTime: "",
         role: "",
         assignedTo: "",
-        assignedBy: loggedUser?.id || "",
-        status: "pending",
-         repeat: "once",
+        assignedBy: loggedUser?.id || "", // reset with loggedUser id
+        status: "pending", // reset status to default
+         repeat: "once", // ✅ new repeat field
+          // company: "",
          company: { id: "", name: "" },
       });
       if (onCreated) onCreated();
@@ -135,7 +118,7 @@ function TaskAssignFormModal({ isOpen, onClose, onCreated }) {
       alert("Failed to assign task. Please try again later.");
     }
     }
-
+    
   };
 
   if (!isOpen) return null;
