@@ -30,11 +30,12 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const watiApiUrl = Deno.env.get("WATI_API_URL") || "https://live-server-XXXXX.wati.io/api/v1/sendSessionMessage";
-    const watiApiToken = Deno.env.get("WATI_API_TOKEN");
+    const waichatApiUrl = Deno.env.get("WAICHAT_API_URL") || "https://waichat.com/api/send";
+    const waichatAccessToken = Deno.env.get("WAICHAT_ACCESS_TOKEN");
+    const waichatInstanceId = Deno.env.get("WAICHAT_INSTANCE_ID");
 
-    if (!watiApiToken) {
-      console.error("WATI API token not configured");
+    if (!waichatAccessToken || !waichatInstanceId) {
+      console.error("Wai Chat API credentials not configured");
       return new Response(
         JSON.stringify({ success: false, error: "WhatsApp service not configured" }),
         {
@@ -61,25 +62,29 @@ Deno.serve(async (req: Request) => {
       `👤 Assigned By: ${assignedBy}\n\n` +
       `Please complete this task on time. Thank you!`;
 
-    const watiPayload = {
-      phoneNumber: phoneNumber.startsWith("+") ? phoneNumber : `+91${phoneNumber}`,
-      messageText: messageText,
+    const cleanPhoneNumber = phoneNumber.replace(/\D/g, '');
+
+    const waichatPayload = {
+      number: cleanPhoneNumber,
+      type: "text",
+      message: messageText,
+      instance_id: waichatInstanceId,
+      access_token: waichatAccessToken,
     };
 
-    const watiResponse = await fetch(watiApiUrl, {
+    const waichatResponse = await fetch(waichatApiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${watiApiToken}`,
       },
-      body: JSON.stringify(watiPayload),
+      body: JSON.stringify(waichatPayload),
     });
 
-    const watiData = await watiResponse.json();
+    const waichatData = await waichatResponse.json();
 
-    if (watiResponse.ok) {
+    if (waichatResponse.ok) {
       return new Response(
-        JSON.stringify({ success: true, data: watiData }),
+        JSON.stringify({ success: true, data: waichatData }),
         {
           status: 200,
           headers: {
@@ -89,11 +94,11 @@ Deno.serve(async (req: Request) => {
         }
       );
     } else {
-      console.error("WATI API error:", watiData);
+      console.error("Wai Chat API error:", waichatData);
       return new Response(
-        JSON.stringify({ success: false, error: watiData }),
+        JSON.stringify({ success: false, error: waichatData }),
         {
-          status: watiResponse.status,
+          status: waichatResponse.status,
           headers: {
             ...corsHeaders,
             "Content-Type": "application/json",
