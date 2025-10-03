@@ -19,7 +19,7 @@ export default function StaffDashboard() {
 
     // ✅ Fetch tasks assigned to this staff member
     axios
-      .get(`https://task-managment-server-al5a.vercel.app/api/tasks/user/${staff.id}`, {
+      .get(`https://task-manageratlas.vercel.app/api/tasks/user/${staff.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -37,7 +37,7 @@ export default function StaffDashboard() {
   const handleStatusChange = async (taskId, newStatus) => {
     try {
       await axios.put(
-        `https://task-managment-server-al5a.vercel.app/api/tasks/${taskId}`,
+        `https://task-manageratlas.vercel.app/api/tasks/${taskId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

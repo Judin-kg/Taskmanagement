@@ -33,7 +33,7 @@ function ManagerTaskAssignModal({ isOpen, onClose, onCreated }) {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const res = await axios.get("https://task-managment-server-al5a.vercel.app/api/companies");
+        const res = await axios.get("https://task-manageratlas.vercel.app/api/companies");
         setCompanies(res.data);
 
         console.log("Fetched companiessssssss:", companies);
@@ -60,7 +60,7 @@ function ManagerTaskAssignModal({ isOpen, onClose, onCreated }) {
 
       if (endpoint) {
         axios
-          .get(`https://task-managment-server-al5a.vercel.app${endpoint}`)
+          .get(`https://task-manageratlas.vercel.app${endpoint}`)
           .then((res) => setUsers(res.data))
           .catch((err) => console.error("Error fetching users:", err));
       } else {
@@ -92,7 +92,7 @@ function ManagerTaskAssignModal({ isOpen, onClose, onCreated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://task-managment-server-al5a.vercel.app/api/tasks", form);
+      await axios.post("https://task-manageratlas.vercel.app/api/tasks", form);
       setForm({
         taskName: "",
         description: "",

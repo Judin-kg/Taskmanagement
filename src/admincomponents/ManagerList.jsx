@@ -12,7 +12,7 @@ export default function ManagerList() {
     //  const [resetId, setResetId] = useState(null);
   const fetchManagers = async () => {
     try {
-      const res = await axios.get("https://task-managment-server-al5a.vercel.app/api/managers");
+      const res = await axios.get("https://task-manageratlas.vercel.app/api/managers");
       const managerOnly = res.data.filter((u) => u.role === "manager");
       setManagers(managerOnly);
     } catch (err) {
@@ -34,7 +34,7 @@ export default function ManagerList() {
     if (!window.confirm("Are you sure you want to delete this manager?")) return;
     try {
       await axios.delete(
-        `https://task-managment-server-al5a.vercel.app/api/managers/${id}`
+        `https://task-manageratlas.vercel.app/api/managers/${id}`
       );
       setManagers((prev) => prev.filter((m) => m._id !== id)); // update UI immediately
     } catch (err) {
@@ -48,7 +48,7 @@ export default function ManagerList() {
     if (!newPassword) return;
 
     try {
-      await axios.put(`https://task-managment-server-al5a.vercel.app/api/managers/${id}/reset-password`, {
+      await axios.put(`https://task-manageratlas.vercel.app/api/managers/${id}/reset-password`, {
         newPassword,
       });
       alert("Password reset successfully!");

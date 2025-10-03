@@ -17,7 +17,7 @@ const StaffSignup = (isOpen) => {
   useEffect(() => {
     if (isOpen) {
       axios
-        .get("https://task-managment-server-al5a.vercel.app/api/assistant-managers")
+        .get("https://task-manageratlas.vercel.app/api/assistant-managers")
         .then((res) => setAssistantManagers(res.data))
         .catch((err) =>
           console.error("Error fetching assistant managers:", err)
@@ -38,7 +38,7 @@ const StaffSignup = (isOpen) => {
     e.preventDefault();
     setMessage('');
     try {
-      const res = await axios.post('https://task-managment-server-al5a.vercel.app/api/auth/signup', formData);
+      const res = await axios.post('https://task-manageratlas.vercel.app/api/auth/signup', formData);
       setMessage(res.data.message || 'Signup successful!');
        if (res.data.success) {
         // ✅ Redirect after short delay or immediately

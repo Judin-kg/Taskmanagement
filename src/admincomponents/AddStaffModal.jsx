@@ -219,7 +219,7 @@ export default function AddStaffModal({ isOpen, onClose, onCreated }) {
   useEffect(() => {
     if (isOpen) {
       axios
-        .get("https://task-managment-server-al5a.vercel.app/api/assistant-managers")
+        .get("https://task-manageratlas.vercel.app/api/assistant-managers")
         .then((res) => setAssistantManagers(res.data))
         .catch((err) =>
           console.error("Error fetching assistant managers:", err)
@@ -242,7 +242,7 @@ export default function AddStaffModal({ isOpen, onClose, onCreated }) {
     setLoading(true);
     try {
       const res = await axios.post(
-        "https://task-managment-server-al5a.vercel.app/api/auth/signup",
+        "https://task-manageratlas.vercel.app/api/auth/signup",
         formData
       );
 

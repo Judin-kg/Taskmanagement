@@ -36,7 +36,7 @@ export default function TaskReports() {
 
   const fetchReports = async () => {
     try {
-      const res = await axios.get("https://task-managment-server-al5a.vercel.app/api/tasks/reports");
+      const res = await axios.get("https://task-manageratlas.vercel.app/api/tasks/reports");
       setReport(res.data);
     } catch (err) {
       console.error("❌ Error fetching reports:", err);
@@ -47,7 +47,7 @@ export default function TaskReports() {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get("https://task-managment-server-al5a.vercel.app/api/tasks/tasks");
+      const res = await axios.get("https://task-manageratlas.vercel.app/api/tasks/tasks");
       setTasks(res.data);
       console.log("Fetched taskssssssss:", res.data);
     } catch (err) {

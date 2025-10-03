@@ -17,7 +17,7 @@ export default function ManagerLogin() {
     setError("");
 
     try {
-      const res = await axios.post("https://task-managment-server-al5a.vercel.app/api/managers/login", form);
+      const res = await axios.post("https://task-manageratlas.vercel.app/api/managers/login", form);
       localStorage.setItem("managerToken", res.data.token);
       localStorage.setItem("manager", JSON.stringify(res.data.manager));
       navigate("/manager/dashboard");
